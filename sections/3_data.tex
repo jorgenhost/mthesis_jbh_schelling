@@ -2,8 +2,48 @@
 \begin{document}
 \section{Data}
 \label{sec:data}
-This section describes data used in the paper.
+I use administrative data from the Statistics Denmark.\footnote{All code available at \textcolor{red}{HERE}. I make heavy use of \href{https://github.com/pola-rs/polars}{Polars} (\textcite{polars_ritchie_vink_2025} \& \textcite{polars_grouper_van_eechoud}) to process the data. Some steps involves manipulating datasets with several billion rows and \href{https://github.com/pola-rs/polars}{Polars} allows to do this efficiently and in parallel. I thank the developers for making this excellent library.} The level of unit I focus on is \textit{households} (maybe specify why). In the following section, I go through the data used in the paper and how I constructed the households.
 
+\subsection{Geospatial}
+The main dataset I use is \boldsf{BOPAEL\_KOORD}. This dataset contains all historic addresses in four dimensions:
+
+\begin{equation}
+    \mathbf{p} = (x_E, y_N, z_F, z_D)
+\end{equation}
+
+\noindent
+Where $\textbf{p}$ is a tuple of x/y/z-coordinates, where subscripts denote east, north, floor and door, respectively. Furthermore, the dataset contain both the start and end date of residency at that specific location. A row from this dataset can be thought of as a sequence.
+
+\subsection{Households}
+Given the richness of the data, I need to carefully define what constitutes a "household". Consider the fact that not all members of a household may move out around the same time (a child leaves for college for example), which further complicates credible identification of "Schelling behavior".
+
+I borrow from the graph theory literature to generate my households. Define individuals as nodes and spatio-temporal overlap as edges. Edges exist only if people overlap in time and space.\footnote{To determine whether or not you overlap in time can be efficiently programmed using just a single logical statement, see Appendix \ref{sec:time_overlap_comp_appendix}.} For $N$ number of sequences, define the $N \times N$ adjacency matrix $\mathbf{A}_{i,j}$:
+
+\begin{equation}
+    \mathbf{A}_{i,j} = \begin{cases}
+        w_{i,j} & \text{if people overlap in time and space} \\
+        0 & \text{otherwise}
+    \end{cases}
+\end{equation}
+
+Weights are determined by:
+
+\begin{equation}
+    w_{i, j} = \frac{\max(0 , \min(t_{i,end}, t_{j, end}) -\max(t_{i,start}-t_{j, start}))}{t_{i,end}-t_{i,start}} + \mathbb{I}[i=j=G]
+    \label{eq:edge_weights}
+\end{equation}
+
+The first part of (\ref{eq:edge_weights}) expresses how much sequence $i$ overlapped with sequence $j$ as a fraction of duration of sequence $i$. The second part is an indicator function to flag if the two sequences are part of the same group $G$, be it family or as partners.\footnote{To do this, I make use of the \boldsf{familie\_id} variable (link?) from the \boldsf{BEF} table.}
+
+I first identify connected components, or sequences, who overlap in space and time. To illustrate, consider the figure below that illustrates this approach. A connected component definition of a household would define the whole graph as a single household. Maximizing edge weights would yield three different "stable" households instead of one.
+\begin{figure}[H]
+    \centering
+    \caption{Household definition}
+    \includegraphics[width=0.4\linewidth]{figs/temporal_community_detection.png}
+\end{figure}
+
+
+\subsection{Adminstrative data}
 
 \subsection{Descriptives}
 Estimation sample: 

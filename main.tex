@@ -2,11 +2,11 @@
 \usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
 \usepackage[utf8]{inputenc}
 %bibliography
-\usepackage[authordate-trad, maxcitenames=2]{biblatex-chicago}
+\usepackage[style=authoryear, maxcitenames=2]{biblatex}
 \addbibresource{bibliography.bib}
 \usepackage{packages}
 \linespread{1.5}
-
+\newcommand{\boldsf}[1]{\textbf{\textsf{#1}}}
 \begingroup
 
 \author {
@@ -79,9 +79,9 @@ In this paper, I do some stuff, show one thing and conclude something
 \subfile{sections/6_conclusion.tex}
 
 \pagebreak
-\begin{spacing}{1.25}
+
     \printbibliography
-\end{spacing}
+
 
 \pagebreak
 
