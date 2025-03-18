@@ -1,0 +1,47 @@
+Figurstørrelser
+
+\begin{figure}[H]
+    \centering
+    \caption{}
+    \resizebox{\textwidth}{!}{\includegraphics[]{Figures/Figure.eps}}
+    \label{fig:}
+\end{figure}
+
+================================
+TO FIGURER VED SIDEN AF HINANDEN
+================================
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \caption{Real interest rate}
+        \label{fig:Real_interest_rate_DK}
+        \includegraphics[width=0.95\textwidth]{Figures/Figure_0.eps} % first figure itself
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \caption{Demographics}
+        \label{fig:TFR_LifeEx0_OAdepratio}
+        \includegraphics[width=0.95\textwidth]{Figures/Figure_1.eps} % second figure itself
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+        \centering
+        \begin{minipage}{0.45\textwidth}
+            \centering
+            \caption{Real interest rate (\%)}
+            \label{fig:Real_interest_rate_DK }
+            \includegraphics[width=0.95\textwidth]{Figures/Figure_0.eps} % first figure itself
+        \end{minipage}
+        \begin{minipage}{0.45\textwidth}
+            \centering
+            \caption{Old-age dependency ratio (\%)}
+            \label{fig:Old-age-dep_intro}
+            \includegraphics[width=0.95\textwidth]{Figures/Figure_1B.eps} % second figure itself
+        \end{minipage}
+        \begin{fignote}
+                Data for real interest rate is Nationalbanken's DISKONTO minus inflation (consumer price index), table DNRENTA and PRIS9 from Statistikbanken respectively. Demographic data is from UN World Population Prospects 2019 (medium fertility variant). The old-age dependency ratio is defined as the ratio between the number of people aged 65 and above relative to the number of people aged 20-64.
+                \end{fignote}
+    \end{figure}

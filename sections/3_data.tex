@@ -1,0 +1,55 @@
+\documentclass[main.tex]{subfiles}
+\begin{document}
+\section{Data}
+\label{sec:data}
+This section describes data used in the paper.
+
+
+\subsection{Descriptives}
+Estimation sample: 
+All existing homeowners are native Danes (all household members are ethnically Danish). Interquartile range of the households age is less than 30 years in a neighborhood. Households who have at least stayed a year. 
+
+Household where all members are in education, earn less than ~70,000 DKK or over 2,000,000 DKK. People that (likely) lives in kolleigiums. This is to ensure some degree homogeneity across homes. 
+
+New Non-West (nearest) neighbors must be within 25m of the incumbent resident. 
+
+\begin{enumerate}
+    \item Map of "selected" \href{nabolagstlas.dk}{Nabolagsatlas} neighborhoods:
+    \begin{itemize}
+        \item Share of non-west inhabitants (1990 / 2010)
+        \item Avg. no of non-west K-nearest neighbors (1990 / 2010) 
+        \item Map of neighborhoods where the "experiment" occurs
+    \end{itemize}
+    \item Summary stats
+    \begin{itemize}
+        \item Dependent variable (move within 2 years of new K=3/4 nearest neighbor)
+        \item Individual characteristics:
+        \begin{itemize}
+            \item Length of education
+            \item Income (highest earner?)
+            \item Age
+            \item Employed
+            \item ?
+        \end{itemize}
+        \item Neighborhood characteristics
+        \begin{itemize}
+            \item Median/average income,
+            \item Population density
+            \item Non-west share
+            \item Native share
+            \item No. of K=10-nearest non-west neighbors (?)
+        \end{itemize}
+        \item 3-4 columns (cond. on being from DK): All / new non-west neighbor (nearest) / new non-west neighbor (near)
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Balance test}
+
+Before diving into the main results, I perform a series of balance tests to determine any potential (mean) differences between the "control" and "treatment" group. Consider the following equation:
+
+\begin{equation}
+    X_{i, j, t} = \phi_1 \mathbb{I}[r', k=n_{nearest}] + \phi_2 \mathbb{I}[r', k = n_{near}] + \phi_3 \mathbb{I}[r', k = n_{far}] + \gamma Z_{i, j, t} + \omega_{j, t} + \epsilon_{i, j, t} 
+    \label{eq:balance_tests}
+\end{equation}
+Where $X$ is observables at the household/individual/neighborhood level(?). Eq. (\ref{eq:balance_tests}) is exactly the same as Eq. (\ref{eq:main_eq_schelling_behavior})
+\end{document}

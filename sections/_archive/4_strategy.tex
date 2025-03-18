@@ -1,0 +1,71 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Empirical strategy}
+\label{sec:empirical_strategy}
+Essentially: Concentration of (past) immigrant neighbour predicts future native "flight". My starting point for determining the propensity to move in response to a new non-native neighbor is the model by \textcite{bramoulle2009_peer_effects} and \textcite{bouncing_with_the_joneses_grenestam}. Consider the following outcome-on-outcome model of social interaction:
+
+\begin{equation}
+    y_{it} = \alpha_i + \beta W_i \mathbf{y}_t + \gamma \mathbf{X}_{it} + \delta W_i \mathbf{X}_t + \epsilon_{it},~\mathbb{E}[\epsilon | \mathbf{X}_{it}] = 0
+\label{eq:start_endo_soc_effect}
+\end{equation}
+
+Where the outcome, binary choice to move or not, of person $i$, denoted $y_{it}$ is a function of a $n x 1$ vector $\mathbf{y}_t$, the contemporaneous choice to move for other households. This is multiplied by $W_i$, the $i^{th}$ row of the $n x n$ interaction matrix $\mathbf{W}$. Each each element $w_{ij}=1$ if household $j$ is a neighbor of person $i$ and zero otherwise.
+
+$\beta$ denotes the endogenous social interaction effect, that is effect of a new neighbor on my propensity to move. This is the focus in this paper. The model from \textcite{bramoulle2009_peer_effects} also includes the exogenous social effect $\delta$ on the propensity to move. In other words, the effect of my neighbors observable background characteristics on my decision to move. 
+
+To elicit meaningful insight into the endogenous social effect, I use plausibly exogenous variation in the number of new non-west neighbors caused by them moving. Consider therefore the following modification of equation (\ref{eq:start_endo_soc_effect}):
+
+\begin{equation}
+    y_{it} = \underset{(?)}{\alpha_i} + \beta D_{ik} \mathbf{y}_{t-1} + \gamma \mathbf{X}_{it} + \epsilon_{it},~\mathbb{E}[\epsilon | \mathbf{X}_{it}] = 0
+\label{eq:spec1_endo_soc_effect}
+\end{equation}
+
+Where the time subscript $t=0, -1, ..., -n$ denotes the time of when the incumbent person decides to move-out.\footnote{For clarity, this happens at $t=0$ for every household such that $y_{i0}=1$.} Each row in $\mathbf{y}_{t-1}$ is given by:
+
+\begin{equation}
+    y_{ij} = 
+    \begin{cases} 
+    1 ~ &\text{if $j$ moves in}  \\
+    0 ~ &\text{if $j$ stays} \\
+    -1 ~ &\text{if $j$ moves out}
+    \end{cases}
+\end{equation}
+
+
+Each element $d_{ij}$ is given by: \footnote{Can be modified to mixed (at least non-native in household), MENAPT, west (excl. DK), etc...} Specifically, each element $d_{ij}$ in $\mathbf{D}_{t-1}$ is given by:
+
+\begin{equation}
+    d_{ij} = 
+    \begin{cases} 
+    1 ~ &\text{if $j$ is a neighbor of $i$ and is of non-native descent}  \\
+    0 ~ &\text{otherwise}
+    \end{cases}
+\end{equation}
+
+I argue that for a meaningful social interaction to manifest itself, we need to allow incumbent persons to react to the arrival of a new (non-west) neighbor. This specification implies that treatment is defined by a change to the neighborhood ethnicity composition. Thus, if a new neighbor does not change the ethnicity composition ($D_{ik} = 0 \rightarrow D_{ik}\mathbf{y}_{t-1}=0$), there is no treatment.
+
+
+
+
+To elicit insight into heterogeneity, use (generalized) causal forest? Look at heterogeneity function of age, years of education? \textbf{SES} 
+
+Look at different otucomes; outcome $y$ prob. of marying differing type(?).
+
+\subsection{Intermission}
+\textcite{bramoulle2009_peer_effects}:
+The "triad" route(?):
+
+\begin{equation}
+    y_i = \alpha + \beta y_{i-1} + \gamma x_{i} + \delta x_ {i-1} + \epsilon_i
+\end{equation}
+
+3 students, $i,j,k$. 
+
+Lags of $x_i$ may be used as instruments for $y_{i-1}$. That is some exogenous measure may be an instrument for the outcome of my neighbor. The neighbors (k) of my (i) new neighbor (j) drew him/her to my neighborhood, but if they are not my neighbor, they have no influence on my decision. In other words instrument characteristics (SES?) of k on the decision to move by j. Will have no correlation with the effect on my propensity to move, but will have on my new neighbor.
+
+In the context of my social interaction Schelling model:
+
+Using lagged "SES" as instrument for $y_{i-1}$, the outcome of my neighbor. 
+
+\end{document}

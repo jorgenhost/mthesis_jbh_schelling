@@ -1,0 +1,98 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+%bibliography
+\usepackage[authordate-trad, maxcitenames=2]{biblatex-chicago}
+\addbibresource{bibliography.bib}
+\usepackage{packages}
+\linespread{1.5}
+
+\begingroup
+
+\author {
+        Jørgen Baun Høst\thanks{In loving memory of Norredine Remaoun.}\\
+        \small \textit{University of Copenhagen} \\
+        \small Department of Economics}
+
+
+\title{Love thy neighbor?\\
+\vspace{0.35cm}
+\Large An empirical test of neighborhood ethnicity change and Schelling behavior\thanks{I am grateful for the guidance given by my supervisors, Andreas Bjerre-Nielsen and Nikolaj Arpe Harmon, in conjunction with valuable input by both Jeppe Søndergaard Johansen and Jan Moritz Johanning. I also thank the Data Science Lab team at Statistics Denmark for giving me access to the unique datasets used in this paper.}
+\vspace{0.35cm}
+}
+\date{\today}
+\setcounter{tocdepth}{2}
+\begin{document}
+\begin{spacing}{1}
+\maketitle    
+\end{spacing}
+
+\vspace*{-1cm}
+\begin{abstract}
+\noindent
+In this paper, I do some stuff, show one thing and conclude something
+
+\medskip
+\noindent
+\textbf{Keywords:}
+
+\medskip
+\noindent
+\textbf{JEL classification:} 
+\end{abstract}
+
+
+\newpage 
+\begingroup
+\begin{spacing}{1.25}
+\tableofcontents
+\end{spacing}
+\endgroup
+
+
+\vspace{1.5cm}
+\begin{center}
+\textbf{Character Count:} 
+\end{center}
+
+\pagebreak
+\subfile{sections/1_introduction.tex}
+
+\pagebreak
+
+\subfile{sections/2_model.tex} 
+
+\pagebreak
+
+\subfile{sections/3_data.tex} 
+
+\pagebreak
+
+\subfile{sections/4_results.tex} 
+
+\pagebreak
+
+\subfile{sections/5_discussion.tex} 
+
+\pagebreak
+
+\subfile{sections/6_conclusion.tex}
+
+\pagebreak
+\begin{spacing}{1.25}
+    \printbibliography
+\end{spacing}
+
+\pagebreak
+
+
+\appendix
+\appendixpage
+%Avoid all sections of TOC be printed
+\addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
+
+\subfile{sections/appendix.tex}
+
+
+
+\end{document}
