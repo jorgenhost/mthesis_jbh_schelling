@@ -5,7 +5,7 @@
 This section describes the model of \textcite{Bayer_2022_nearest_neighbor} which is rooted in the work by \textcite{schelling1971dynamic}. A simulation of \textcite{schelling1971dynamic} can be found in Appendix \ref{sec:appendix_schelling}.
 
 \subsection{Empirical Framework}
-The task of disentangling causes of a households decision to either move or remain in their neighborhood is inherently difficult. To plausibly model this decision, consider the following utility function for an existing homeowner $i$ with observable attributes $Z_i$ that maps the dynamic binary choice of either staying or leaving in discrete time:
+The task of disentangling causes of a households decision to either move or remain in their neighborhood is inherently difficult. To plausibly model this decision, I follow \textcite{Bayer_2022_nearest_neighbor}. Consider the following utility function for an existing homeowner $i$ with observable attributes $Z_i$ that maps the dynamic binary choice of either staying or leaving in discrete time:
 
 \begin{equation}
     U_{i, j, t} = f(Z_i, p_{i, j, t}, X_{j, t}, \xi_{j,t }) + \sum_k g(Z_i, Z_{k, t}, D_{i, k}, \beta) + \epsilon_{i, j, t}
@@ -19,15 +19,20 @@ Clearly, unobserved neighborhood amenities constitute a problem to identificatio
 Further, households are inherently forward-looking, such that a new neighbor may provide new information on the future evolution of the neighborhood. Whether an existing homeowner directly care about the ethnicity of a new non-west neighbor or what the new non-west neighborhood may signal of the future evolution of the neighborhood is challenging to disentangle. 
 
 \subsection{Empirical Strategy}
-To account for the issues above and ensure credible identification, I compare native (etnically Danish) households who live in the same neighborhood and receive one (or more?) new non-west neighbors. Specifically, I compare households who receive a new non-west neighbors among their \textbf{nearest} neighbors (K=3(4?) nearest) to those who receive a new non-west neighbor among their \textbf{near} neighbors (K = 5+? nearest). I denote these as "treatment" and "control", respectively.
+To account for the issues above and ensure credible identification, I compare native (etnically Danish) households who live in the same neighborhood and receive new non-west neighbors at slightly different distances. Specifically, I compare households who receive a new non-west neighbors among their \textit{nearest} neighbors to those who receive a new non-West neighbor "just down the road". 
 
-With Eq. \ref{eq:utility_household_moving} in mind and abstracting from the time $t$ indices, consider the moving propensity $Y_i$ of household $i$ in response to a different-ethnic $e'$ neighbor for $k_{nearest} \in \{1, 2, 3, (4?)\}$ and $k_{near} \in \{5, 6, ..., 10\}$:
+In this paper, I focus on $K=40$ nearest neighbors.
+\footnote{The choice is in part due to computational constraints, as datasets on this form quickly explode in size. Further, I do this to compare results with \textcite{Bayer_2022_nearest_neighbor} who narrows the scope at the same scale.} Consider a home $i$. The closest neighbors to $i$ are homes $j\neq i$ ordinally ranked for rank $K$ in distance from $i$.
+
+I define nearest neighbors as those living at rank $k_{nearest}\in \{1, 2, 3\}$ and those "just down the road" as those $k_{close} \in \{4, ..., 40\}$. I denote these as "treatment" and "control", respectively.
+
+With Eq. \ref{eq:utility_household_moving} in mind and abstracting from the time $t$ indices, consider the moving propensity $Y_i$ of household $i$ in response to a different-ethnic $e'$ neighbor for $k_{nearest}$ and $k_{near}$:
 
 \begin{equation}
     Y_i(e', k) = \mathcal{P}[e', k] + \xi_i B(e', k) + \rho_i + \omega_j
 \end{equation}
 
-The first term denotes the 'tipping point' in the spirit of \textcite{schelling1971dynamic}, ie. the direct preference $\mathcal{P}$ for living close to a $k$-nearest neighbor of different ethnicity.\footnote{Not that this is not a direct estimation of \textcite{schelling1971dynamic}. To my knowledge, the closest to this is work by \textcite{bohlmark_willen_2020_tipping} who estimate city-level tipping points in Sweden.}   The second term denotes the difference in future amenities related  to the arrival of a new non-west K-nearest neighbor. Finally, $\rho_i$ and $\omega_j$ captures the idiosyncratic factors which affect household $i$'s moving propensity and neighborhood $j$ as a whole. 
+The first term denotes the 'tipping point' in the spirit of \textcite{schelling1971dynamic}, ie. the direct preference $\mathcal{P}$ for living close to a $k$-nearest neighbor of different ethnicity.\footnote{Note, that this is not a direct estimation "tipping point" of \textcite{schelling1971dynamic}. To my knowledge, the closest to this is work by \textcite{bohlmark_willen_2020_tipping} who estimate city-level tipping points in Sweden.}   The second term denotes the difference in future amenities related  to the arrival of a new non-west K-nearest neighbor. Finally, $\rho_i$ and $\omega_j$ captures the idiosyncratic factors which affect household $i$'s moving propensity and neighborhood $j$ as a whole. 
 
 I am specifically interested in $\mathcal{P}[e', k_{near}]$, ie. the moving propensity in response to a new non-west neighbor among your \textbf{nearest} neighbors. To do so, I difference the moving propensity between those who get a new non-west neighbor $a$ among your $k_{nearest}$ to those who get a new non-west neighbor $b$ slightly further away, $k_{near}$ in a neighborhood $j$:
 \begin{equation}
@@ -52,16 +57,16 @@ This leaves:
 
 Finally, from the perspective of incumbent households, new neighbors are quasi-randomly assigned within the local neighborhood $j$, such that $\rho_a - \rho_b \perp \mathcal{P}[e', k_{nearest}]^*$. In other words, the specific home where a new neighbor moves in is not systematically related to the existing homeowner's individual preferences. If the arrival was not random, then I cannot say whether an incumbent homeowner moves in response to new non-west neighbor or due to the neighborhood characteristics that may influence the new neighbor's choice of location. 
 
-Averaging over $J$ neighborhoods yields a consistent estimate of the average treatment on the treated (ATT) $\overline{Y(e', k_{nearest}) - Y(e', k_{near})}$. 
+Averaging over $J$ neighborhoods yields a consistent estimate of the average treatment on the treated (ATT) $\overline{Y(e', k_{nearest}) - Y(e', k_{near})}$ conditional on observable characteristics. 
 \begin{equation}
-    Y_{i, j, t} = \beta_1 \mathbb{I}[r', k=n_{nearest}] + \beta_2 \mathbb{I}[r', k = n_{near}] + \underset{\text{can be included}}{ \beta_3 \mathbb{I}[r', k = n_{far}] }  + \gamma Z_{i, j, t} + \omega_{j, t} + \epsilon_{i, j, t}
+    Y_{i, j, t} = \beta_1 \mathbb{I}[r', k=n_{nearest}] + \beta_2 \mathbb{I}[r', k = n_{near}] + \beta_3 \mathbb{I}[r', k = n_{close}]  + \gamma Z_{i, j, t} + \omega_{j, t} + \epsilon_{i, j, t}
     \label{eq:main_eq_schelling_behavior}
 \end{equation}
 
 $Y_{i, j, t}$ denotes the outcome of interest, an indicator for whether household $i$ moves within a given time period following the a new non-west neighbor. Standard errors are clustered at the neighborhood(?)-year level.
 
-The parameter(s) of interest is $\beta_1 - \beta_2$, which represents the difference in moving propensity in response to a new non-west neighbor. $k_{nearest} \in \{1, 2, 3, 4\}$, $k_{near} \in \{5, 6, 7, 8, 9, 10)\}$ and $k_{far} \in \{[11-20], [21-30], [31-40]\}$.
+The parameter(s) of interest is $\beta_1 - \beta_3$ (or $\beta_1 - \beta_3$), which represents the difference in moving propensity in response to a new non-west neighbor. $k_{nearest} \in \{1, 2, 3\}$, $k_{near} \in \{4, 5, 6\}$ and $k_{close} \in \{[11-20], [21-30], [31-40]\}$.
 
-The inclusion neighborhood-by-quarter(?) effects $\omega_{j,t}$ implies that I am comparing household that are within the same neighborhood at the same time. 
+The inclusion neighborhood-by-quarter effects $\omega_{j,t}$ implies that I am comparing household that are within the same neighborhood at the same time. 
 
 \end{document}

@@ -1,8 +1,33 @@
 \documentclass[../main.tex]{subfiles}
 \begin{document}
-
-\section{Time overlap computation}
-\label{sec:time_overlap_comp_appendix}
+\counterwithin{figure}{section}
+\section{Additional figures}
+\begin{landscape}
+\begin{figure}
+\centering
+\caption{Incidence of new different-type neighbors at the neighborhood level} \label{fig:health}
+	\begin{subfigure}{.55\textwidth}	
+	\centering
+	\includegraphics[width=\textwidth]{figs/cph_howdy_neighbor.pdf}	
+	\caption{Copenhagen} \label{fig:incidence_different_type_cph}
+	\end{subfigure}
+	\begin{subfigure}{.6\textwidth}	
+	\centering
+	\includegraphics[width=\textwidth]{figs/greve_howdy_neighbor.pdf}	
+	\caption{Greve} \label{fig:incidence_different_type_greve}
+	\end{subfigure}	
+    
+	\begin{subfigure}{.55\textwidth}	
+	\centering
+	\includegraphics[width=\textwidth]{figs/fredericia_howdy_neighbor.pdf}	
+	\caption{Fredericia} \label{fig:incidence_different_type_fredericia}
+	\end{subfigure}	
+\begin{tablenotes}
+\item \footnotesize \textit{Note:} The figure show the variation in receiving a new-non West neighbor for native households at the \textit{neighborhood} scale for three different municipalities. Household types are split up in three types (native/non-West/West), see section \ref{sec:intro_definitions} for more details. Neighborhoods are defined in section \ref{sec:data_geospatial}. Municipal borders were redrawn in 2007 with "Kommunalreformen" which is what these borders represent.
+\end{tablenotes}
+\label{fig:incidence_new_non_west_neighbors_appendix}
+\end{figure}
+\end{landscape}
 
 \section{The Schelling Model}
 
