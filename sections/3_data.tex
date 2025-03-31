@@ -13,17 +13,17 @@ The main dataset I use is \boldsf{BOPAEL\_KOORD}. This dataset contains all hist
 \end{equation}
 
 \noindent
-Where $\textbf{p}$ is a tuple of x/y/z-coordinates, where subscripts denote east, north, floor and door, respectively. Furthermore, the dataset contain both the start and end date of residency at that specific location. A row from this dataset can be thought of as a sequence.
+Where $\textbf{p}$ is a tuple of x/y/z-coordinates, where subscripts denote east, north, floor and door, respectively, in the ETRS89-projection. This projection is specifically tailored to Northern Europe such that distances between coordinates, whether these are Manhattan or euclidean, are measured in meters. Crucially, the dataset contain both the start and end date of residency at those coordinates. These are derived administrative data, where individuals report their main address. Thus, in effect, the outcome of "moving" is synonymous with a "change in address". 
 
-A key component of my identification strategy is that I specify which \textit{neighborhood} a household lives in at a given point in time. This is parameterized by $\omega_{j,t}$ in (\ref{eq:main_eq_schelling_behavior}). It remains challenging to consistently define the borders of a neighborhood. I rely on work by \textcite{nabolagsatlas_neighborhoods_boje2023}, who use the Danish Kvadratnet, a graphical representation of Denmark as squares down to the 100m-by-100m level, to delineate "fixed" neighborhoods as polygons that contain at least 100 inhabitants. To do this, they apply a heuristic version of the MaxP-regionalization algorithm by \textcite{maxp_heuristic_wei2021efficient}. I elect to further aggregate this to the level of a minimum 500 inhabitants to strike a balance between variation and salient social interactions. 
+A key component of my identification strategy is that I specify which \textit{neighborhood} a household lives in at a given point in time. This is parameterized by $\omega_{j,t}$ in (\ref{eq:main_eq_schelling_behavior}). There exists no clear consensus of what constitues a neighborhood in the geopgrahical sense. For instance, I could use administrative borders such as municipalities or parishes. However, I believe there is a number of issues by doing this. First, municipalities are way too large to elicit any salient social interactions and, second, I believe parishes to have borders that are too inconsistently drawn.\footnote{In 2024, the sizes of parishes ranged between less than 100 to over 20,000 (\textcite{dst_sogn_stats}).} I rely on work by \textcite{nabolagsatlas_neighborhoods_boje2023}, who use the Danish Kvadratnet, a graphical representation of Denmark as squares down to the 100m-by-100m level, to delineate "fixed" neighborhoods as polygons that contain at least 100 inhabitants. To do this, they apply a heuristic version of the MaxP-regionalization algorithm by \textcite{maxp_heuristic_wei2021efficient}. Because I fear that the outcome of moving in may be relative sparse in some areas, I elect to further aggregate this to the level of a minimum 500 inhabitants to strike a balance between variation and salient social interactions. 
 
-\subsection{Administrative data}
-I further enrich my data from administrative sources. Specifcally, I use the table \boldsf{BEF} to fetch fundamental background variables, such as birth date (\boldsf{foed\_dag}), parental info (\boldsf{mor\_id} \& \boldsf{far\_id}), country of origin (\boldsf{opr\_land}) and partner identifier (\boldsf{aegte\_pid} / \boldsf{e\_faelle\_pid}). This is combined with table \boldsf{IND} from which I extract gross income (\boldsf{perindkialt\_13}), which includes both cash transfer and wages, and net wealth (without pension) (\textcolor{red}{\boldsf{form}}). Additionally, I extract employment status (\boldsf{beskst13}) from the \boldsf{RAS} table. Finally, I also include highest obtained education level (\boldsf{hfaudd}) from table \boldsf{UDDF}.\footnote{I specifically categorize education according to the DISCED-15 classification, see \href{https://www.dst.dk/da/Statistik/dokumentation/nomenklaturer/disced15-audd}{link}.}
+
+\subsection{Nearest neighbors}
+With the definition of households and geospatial dataset in mind, I turn to the identification of nearest neighbors. From $\mathbf{p}$, I construct a KD-tree (\textcite{bentley1975multidimensional}) of all unique addresses (that is all unique 4-dimensional combinations within $\mathbf{p}$). This data structure allows me to query nearest neighbors, either specifying the ordinal rank $K$, which is what I elect to focus on, or within a radius $r$. I further save the euclidean ($L_2$-norm) distance in meters to later segment my sample by the distance to the nearest neighbors. Because not all addresses exist for the same amount of time (new homes are built or old ones torn down), I make sure to "buffer" extra addresses by widening my search space. 
+
 
 \subsection{Households}
-Given the richness of the data, I need to carefully define what constitutes a "household". Consider the fact that not all members of a household may move out around the same time (a child leaves for college for example), which further complicates credible identification of "Schelling behavior".
-
-I borrow from the graph theory literature to generate my households. Define individuals as nodes and spatio-temporal overlap as edges. Edges exist only if people overlap in time and space.\footnote{To determine whether or not you overlap in time can be efficiently programmed using just a single logical statement, see Appendix \ref{sec:time_overlap_comp_appendix}.} For $N$ number of sequences, define the $N \times N$ adjacency matrix $\mathbf{A}_{i,j}$:
+Given the richness of the data, I need to carefully define what constitutes a "household". To do this, I borrow from the graph theory literature. Define individuals as nodes and spatio-temporal overlap as edges. Edges exist only if people overlap in time and space. For $N$ number of sequences, define the $N \times N$ adjacency matrix $\mathbf{A}_{i,j}$:
 
 \begin{equation}
     \mathbf{A}_{i,j} = \begin{cases}
@@ -39,62 +39,114 @@ Weights are determined by:
     \label{eq:edge_weights}
 \end{equation}
 
-The first part of (\ref{eq:edge_weights}) expresses how much sequence $i$ overlapped with sequence $j$ as a fraction of duration of sequence $i$. The second part is an indicator function to flag if the two sequences are part of the same group $G$, be it as family or as partners.\footnote{To do this, I make use of the \boldsf{familie\_id} variable (link?) from the \boldsf{BEF} table.}
+The first part of (\ref{eq:edge_weights}) expresses how much sequence $i$ overlapped with sequence $j$ as a fraction of duration of sequence $i$. The second part is an indicator function to flag if the two sequences are part of the same group $G$, be it as family or as partners.
 
-I first identify connected components, or sequences, who overlap in space and time. To illustrate, consider the figure below that illustrates this approach. A connected component definition of a household would define the whole graph as a single household. Maximizing edge weights would yield three different "stable" households instead of one.
+Consider the fact that not all members of a household may move out around the same time, which further complicates credible identification of "Schelling behavior". For example, suppose person A and person B moves in at the same time in a home. Person A moves out just before B, but a person C moves into the home and lives with person B for a short amount of time, before B moves out. Linking the sequences together, or in graph theory terms identifying \textit{connected components}, would yield a single household of A, B and C, when it most intuitively makes sense to have A and B as one household and C as another. 
+
+To formalize this approach, I use administrative registers as an intermediate to evaluate different "household partitions".\footnote{Specifically, I make use of the \boldsf{familie\_id} variable from the \boldsf{BEF} table that maps groups of people that live at the same address, see \textcite{dst_familie_id}.} Maximizing edge weights defined in (\ref{eq:edge_weights}), scaled by the size the household partition, is what I define a "household" as. Consider Figure \ref{fig:temporal_community_detection} as an illustration of this approach. Maximizing edge weights would yield three different "stable" households instead of one.
 \begin{figure}[H]
     \centering
     \caption{Household definition}
     \includegraphics[width=0.4\linewidth]{figs/temporal_community_detection.png}
+    \label{fig:temporal_community_detection}
 \end{figure}
 
+\subsection{Administrative data}
+I further enrich my data from administrative sources. Specifcally, I use the table \boldsf{BEF} to fetch fundamental background variables, such as birth date (\boldsf{foed\_dag}), parental info (\boldsf{mor\_id} \& \boldsf{far\_id}), country of origin (\boldsf{opr\_land}) and partner identifier (\boldsf{aegte\_pid} / \boldsf{e\_faelle\_pid}). This is combined with table \boldsf{IND} from which I extract gross income (\boldsf{perindkialt\_13}), which includes both cash transfer and wages, and net wealth (without pension) (\textcolor{red}{\boldsf{form}}). Additionally, I extract employment status (\boldsf{beskst13}) from the \boldsf{RAS} table. Finally, I also include highest obtained education level (\boldsf{hfaudd}) from table \boldsf{UDDF}.\footnote{I specifically categorize education according to the DISCED-15 classification, see \textcite{dst_disced_edu}.}
 
-\subsection{Descriptives}
-Estimation sample: 
-All existing homeowners are native Danes (all household members are ethnically Danish). Interquartile range of the households age is less than 30 years in a neighborhood. Households who have at least stayed a year. 
+\subsection{Estimation sample}
+\label{sec:estimation_sample_definition}
+I impose a number of restrictions on the sample of households to build my estimation sample. First, I drop households with gross real yearly incomes below 200,000 DKK and above 1,500,000 DKK. In similar vein, I keep household that have real net wealth (excluding pensions) between -200,000 DKK and 500,000 DKK. I further require that the oldest member of the household is between 30 and 60. These restrictions weeds out instances where members of households may be studying or outside the labor market.  
 
-Household where all members are in education, earn less than ~70,000 DKK or over 2,000,000 DKK. People that (likely) lives in kolleigiums. This is to ensure some degree homogeneity across homes. 
+Next, I restrict my analysis to native and non-West households, following the definition set out in section \ref{sec:intro_definitions}. This choice is mainly drive by the historic fact that Denmark has undergone a transition from a relatively homogenously ethnic society to one with a significantly larger share of people with non-West origins. In 1985, around 1 pct. of people had non-West origin, which grew to around 9 pct. in 2020. This increase has sparked tension and, like with most other European countries, an increase in support for anti-immigration policies (cite). I drop "Western" households in my analysis as previous evidence (cite) mainly points to residential segregation between non-Western immigrants and native households.
 
-New Non-West (nearest) neighbors must be within 25m of the incumbent resident. 
-\begin{figure}
+Furthermore, I require that the nearest neighbor to a household is within 25 meters. This is to ensure that social interactions between new different-type neighbors are more likely to take place. I present evidence of why this assumption is reasonable in Table \ref{}, as household have limited response to a new different-type nearest neighbor beyond 25 meters. In addition, I focus on neighborhoods with a population between 1,000 and 25,000 people per square kilometers. 
+
+\subsection{Summary statistics}
+Figure \ref{fig:incidence_different_type_dk} depicts the incidence of new different-type neighbors among your $K=40$ nearest neighbors for native households split by municipality since 1985. Unsurprisingly, major cities (Copenhagen, Aarhus and Odense) are commonly represented in the sample. On average, each household experience between 4-6 new different-type neighbors during their residence. Interestingly, it is not any of the major cities with highest avg. incidence. It is in fact in Ishøj, where the average household experience over 9 new different-type neighbors among their $K=40$ nearest neighbors. 
+
+\begin{figure}[H]
     \centering
     \caption{Incidence of new different-type neighbors at the national level}
     \includegraphics[width=\linewidth]{figs/dk_howdy_neighbor.pdf}
     \label{fig:incidence_different_type_dk}
 \begin{tablenotes}
-\item \footnotesize \textit{Note:} The figure show the variation in receiving a new-non West neighbor for native households on a national scale. Household types are split up in three types (native/non-West/West), see section \ref{sec:intro_definitions} for more details. Neighborhoods are defined in section \ref{sec:data_geospatial}.
+\item \footnotesize \textit{Note:} The figure show the variation in receiving a new-non West neighbors for native households split by municipality. Municipal borders correspond to the ones imposed by "Kommunalreformen" in 2007.  Household types are split up in three types (native/non-West/West), see section \ref{sec:intro_definitions} for more details. Neighborhoods are defined in section \ref{sec:data_geospatial}.
 \end{tablenotes}
 \end{figure}
 
-\begin{landscape}
+However, Figure \ref{fig:incidence_different_type_dk} hides the great variation in the incidence of new different-type neighbors that exists at the very local scale. Figure \ref{fig:incidence_different_type_neighborhood} shows the incidence of new different-type neighbors across neighborhoods in three different cities/municipalities since 1985 as defined in section \ref{sec:data_geospatial}. Residents in some neighborhoods in Copenhagen get upwards of 30 new non-West neighbors during their residence, while other neighborhoods get less than 2. The same goes for Aarhus, where the average native resident in some neighborhoods get more than 15 new different-type neighbors.
+
+%\begin{landscape}
 \begin{figure}
 \centering
-\caption{Incidence of new different-type neighbors at the neighborhood level} \label{fig:health}
-	\begin{subfigure}{.55\textwidth}	
+\caption{Incidence of new different-type neighbors at the neighborhood level} \label{fig:incidence_different_type_neighborhood}
+	\begin{subfigure}{.5\textwidth}	
+	\centering
+	\includegraphics[width=\textwidth]{figs/ishoj_howdy_neighbor_sample.pdf}	
+	\caption{Ishøj} \label{fig:incidence_different_type_ishoj}
+	\end{subfigure}
+    \begin{subfigure}{.42\textwidth}	
+	\centering
+	\includegraphics[width=\textwidth]{figs/aarhus_howdy_neighbor_sample.pdf}	
+	\caption{Aarhus} \label{fig:incidence_different_type_aarhus}
+	\end{subfigure}
+    
+    \begin{subfigure}{.65\textwidth}	
 	\centering
 	\includegraphics[width=\textwidth]{figs/cph_howdy_neighbor_sample.pdf}	
 	\caption{Copenhagen} \label{fig:incidence_different_type_cph}
-	\end{subfigure}
-	\begin{subfigure}{.6\textwidth}	
-	\centering
-	\includegraphics[width=\textwidth]{figs/greve_howdy_neighbor_sample.pdf}	
-	\caption{Greve} \label{fig:incidence_different_type_greve}
-	\end{subfigure}	
-    
-	\begin{subfigure}{.55\textwidth}	
-	\centering
-	\includegraphics[width=\textwidth]{figs/fredericia_howdy_neighbor_sample.pdf}	
-	\caption{Fredericia} \label{fig:incidence_different_type_fredericia}
 	\end{subfigure}	
 \begin{tablenotes}
-\item \footnotesize \textit{Note:} The figure show the variation in receiving a new-non West neighbor for native households at the \textit{neighborhood} scale for three different municipalities. Neighborhoods not in the sample are greyed out. Household types are split up in three types (native/non-West/West), see section \ref{sec:intro_definitions} for more details. Neighborhoods are defined in section \ref{sec:data_geospatial}. Municipal borders were redrawn in 2007 with "Kommunalreformen" which is what these borders represent. See Figure \ref{fig:incidence_new_non_west_neighbors_appendix} for an unconstrained version of this figure.
+\item \footnotesize \textit{Note:} The figure show the variation in receiving a new-non West neighbor for native households at the \textit{neighborhood} scale for three different municipalities. Neighborhoods not in the sample are greyed out. Household types are split up in three types (native/non-West/West), see section \ref{sec:intro_definitions} for more details. Neighborhoods are defined in section \ref{sec:data_geospatial}. See Figure \ref{fig:incidence_new_non_west_neighbors_appendix} for an unconstrained version of this figure.
 \end{tablenotes}
 \label{fig:incidence_new_non_west_neighbors}
 \end{figure}
+
+\newpage
+Table \ref{tab:descriptives_native_and_non_west} presents summary statistics for the two samples of Native and non-Western households as defined in section \ref{sec:estimation_sample_definition}. Columns \textit{All} describe each quarter-by-year observations for a given household where all covariates are observed in the period between 1985 and 2020 and where household may be "at-risk" of receiving a new different-type neighbor. Columns \textit{Nearest} and \textit{Close} each describe the year-by-quarter observations, where a household experience a new different-type neighbor either as their nearest neighbor ($K\in [1,2, 3]$) or as their "close" neighbor ($K \in [4,5, ..., 40]$)
+
+\begin{table}[H]
+    \centering
+    \caption{Summary statistics}
+    \resizebox{\textwidth}{!}{\input{tabs/descriptives_merged.tex}}
+    \label{tab:descriptives_native_and_non_west}
+\begin{tablenotes}[flushleft]
+\item \small \textit{Note:} This table shows presents summary statistics for households "at-risk" of receiving a different-type neighbor. Income and wealth are equvalised to compare household size and composition. The \textit{Nearest} and \textit{Close} denote instances, where a household experienced a new different-type among their $K\in [1,2,3]$ nearest neighbors or close neighbors ($K\in [4, 5, ...,40]$).
+\end{tablenotes}
+    
+\end{table}
+
+\begin{landscape}
+\begin{figure}
+      \centering
+    \caption{Temporal development of K-nearest neighbors}
+    
+    \begin{subfigure}{1.5\textwidth}
+    \includegraphics[width=\linewidth]{figs/temporal_knn_native_1990_2020_w_sim.pdf}
+    \caption{Native households}
+    \label{fig:temporal_knn_native_1990_2020}
+    \end{subfigure}	
+    \begin{subfigure}{1.5\textwidth}
+    \includegraphics[width=\linewidth]{figs/temporal_knn_non_west_1990_2020_w_sim.pdf}
+    \caption{Non-Western households}
+    \label{fig:temporal_knn_native_1990_2020}
+    \end{subfigure}	
+\begin{tablenotes}
+\item \footnotesize \textit{Note:} The figure \end{tablenotes}
+\end{figure}
 \end{landscape}
 
+\subsection{Balance test}
 
+Before diving into the main results, I perform a series of balance tests to determine any potential (mean) differences between the "control" and "treatment" group. Consider the following equation:
 
+\begin{equation}
+    X_{i, j, t} = \phi_1 \mathbb{I}[r', k=n_{nearest}] + \phi_2 \mathbb{I}[r', k = n_{near}] + \phi_3 \mathbb{I}[r', k = n_{close}] + \omega_{j, t} + \epsilon_{i, j, t} 
+    \label{eq:balance_tests}
+\end{equation}
+Where $X$ is observables at the household and individual level Eq. (\ref{eq:balance_tests}) is exactly the same as Eq. (\ref{eq:main_eq_schelling_behavior}). 
+\end{document}
 
 \begin{enumerate}
     \item Map of "selected" \href{nabolagstlas.dk}{Nabolagsatlas} neighborhoods:
@@ -125,25 +177,3 @@ New Non-West (nearest) neighbors must be within 25m of the incumbent resident.
         \item 3-4 columns (cond. on being from DK): All / new non-west neighbor (nearest) / new non-west neighbor (near)
     \end{itemize}
 \end{enumerate}
-
-\begin{landscape}
-\begin{figure}
-      \centering
-    \caption{Temporal development of K-nearest neighbors}
-    \includegraphics[width=\linewidth]{figs/temporal_knn_native_1990_2020_w_sim.pdf}
-    \label{fig:incidence_different_type_dk}
-\begin{tablenotes}
-\item \footnotesize \textit{Note:} The figure \end{tablenotes}
-\end{figure}
-\end{landscape}
-
-\subsection{Balance test}
-
-Before diving into the main results, I perform a series of balance tests to determine any potential (mean) differences between the "control" and "treatment" group. Consider the following equation:
-
-\begin{equation}
-    X_{i, j, t} = \phi_1 \mathbb{I}[r', k=n_{nearest}] + \phi_2 \mathbb{I}[r', k = n_{near}] + \phi_3 \mathbb{I}[r', k = n_{close}] + \omega_{j, t} + \epsilon_{i, j, t} 
-    \label{eq:balance_tests}
-\end{equation}
-Where $X$ is observables at the household and individual level Eq. (\ref{eq:balance_tests}) is exactly the same as Eq. (\ref{eq:main_eq_schelling_behavior}). 
-\end{document}
