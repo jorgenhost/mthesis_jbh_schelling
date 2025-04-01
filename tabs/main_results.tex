@@ -1,11 +1,11 @@
-\setlength{\LTpost}{0mm}
-\begin{longtable}{lcccc}
+\begin{tabular}{lcccc}
 \toprule
   & (1) & (2) & (3) & (4) \\ 
 \midrule
-New diff-type neighbor \$k\_\{nearest\}\$ v \$k\_\{close,20\}\$ & 0.949*** & 0.962*** & 0.747*** & 0.702*** \\ 
+New diff-type neighbor $k_{nearest}$ v $k_{close,20}$ & 0.949*** & 0.962*** & 0.747*** & 0.702*** \\ 
  & (0.097) & (0.098) & (0.090) & (0.077) \\ 
-N & 5369040 & 5369040 & 5369040 & 5369040 \\ 
+\midrule
+N & 5,369,040 & 5,369,040 & 5,369,040 & 5,369,040 \\ 
 Neighborhood-by-quarter FE & X & X & X & X \\ 
 Mean of dependent variable & 20.16 & 20.16 & 20.16 & 20.16 \\ 
 Number of neighborhoods & 3443 & 3443 & 3443 & 3443 \\ 
@@ -13,9 +13,4 @@ Income &  & X & X & X \\
 Tenure &  &  & X & X \\ 
 Age &  &  &  & X \\ 
 \bottomrule
-
-\begin{minipage}{\linewidth}
-* p < 0.05, ** p < 0.01, *** p < 0.001\\
-Standard errors (in parenthesis) are clustered at the municipality-year level.\\
-Neighborhoods are heuristically aggregated from Nabolagsatlas.dk to contain a minimum of 500 people.\\
-\end{minipage}
+\end{tabular}

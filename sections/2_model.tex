@@ -2,27 +2,43 @@
 \begin{document}
 \section{Model}
 \label{sec:model}
-This section describes the model of \textcite{Bayer_2022_nearest_neighbor} which is rooted in the work by \textcite{schelling1971dynamic}. A simulation of \textcite{schelling1971dynamic} can be found in Appendix \ref{sec:appendix_schelling}.
+%A simulation of \textcite{schelling1971dynamic} can be found in Appendix \ref{sec:appendix_schelling}.
+%The task of disentangling causes of a households decision to move is inherently difficult in part due to the endogenous factors that may simultaneously affect both the outcome (the decision to move) and the treatment (the decision of a different household to move to your neighborhood). 
+%In trying to model this decision from the perspective of an incumbent household, I follow \textcite{Bayer_2022_nearest_neighbor}.
+
 
 \subsection{Empirical framework}
-The task of disentangling causes of a households decision to either move or remain in their neighborhood is inherently difficult. To plausibly model this decision, I follow \textcite{Bayer_2022_nearest_neighbor}. Consider the following utility function for an existing homeowner $i$ with observable attributes $Z_i$ that maps the dynamic binary choice of either staying or leaving in discrete time:
+I begin by formalizing the framework by \textcite{Bayer_2022_nearest_neighbor} that models a household's decision to either move or stay in a neighborhood that evolves over time. I assume that the preferences of households are dynamic - they care about the quality and composition of their neighborhood currently, but also how they expect the neighborhood to evolve over time. 
+
+
+Consider the following utility function for an existing homeowner $i$ that lives in neighborhood $j$ with observable attributes $Z_i$ that maps the dynamic binary choice of either staying or leaving in discrete time:
 
 \begin{equation}
-    U_{i, j, t} = f(Z_i, p_{i, j, t}, X_{j, t}, \xi_{j,t }) + \sum_k g(Z_i, Z_{k, t}, D_{i, k}, \beta) + \epsilon_{i, j, t}
+    U_{i, j, t} = f(Z_{i,t}, X_{j, t}, \xi_{j,t }, \alpha) + \sum_k g(Z_i, Z_{k, t}, D_{i, k}, \beta) + \epsilon_{i, j, t}
     \label{eq:utility_household_moving}
 \end{equation}
 
-$f(\cdot)$ captures utility derived from the observed $X_{j,t}$ and unobserved $Z_{i, jt}$ amenities of a neighborhood and the value of a household $i$'s home. $g(\cdot)$ captures the utility derived from the characteristics of each neighbor $k$, who lives $D_{i, k}$ away. $\epsilon_{i, j, t}$ captures the idiosyncratic taste of household $i$'s specific home. 
 
-Clearly, unobserved neighborhood amenities constitute a problem to identification. Suppose, a household faces a school or a decline in school quality in their local area, but at the same time get a new non-west neighborhood immediately next door. Is the decision to move then the result of the school closure / quality decline or the new neighbor? There is no clear answer to this and illustrates why these effects are difficult to disentangle.
 
-Further, households are inherently forward-looking, such that a new neighbor may provide new information on the future evolution of the neighborhood. Whether an existing homeowner directly care about the ethnicity of a new non-west neighbor or what the new non-west neighborhood may signal of the future evolution of the neighborhood is challenging to disentangle. 
+$f(\cdot)$ captures utility derived from the both the observed $X_{j,t}$ and unobserved $\xi_{j,t}$ amenities of a neighborhood and the sensitivity $\alpha$ to these. $g(\cdot)$ captures the utility derived from the characteristics of each neighbor $k$, who lives at a distance of $D_{i, k}$ away. The distance parameter $D_{i,k}$ in the utility function captures the spatial dimension of neighbor effects, allowing the model to account for the intuitive concept that interactions with immediate neighbors may be more consequential than with those living further away. This spatial dimension is central to the nearest neighbor research design. $\epsilon_{i, j, t}$ captures the idiosyncratic taste of household $i$'s specific home. $\beta$ denotes the sensitivity to the characteristics of your neighbors.
+
+Clearly, unobserved neighborhood amenities constitute a problem to identification. Should you be so lucky to have access to data on neighborhood amenities at a granular scale, you could include these in a regression model, but they may be endogenously determined themselves. For instance, school quality is correlated with neighborhood income, but what made them good in the first place? To further illustrate the problems involved unobserved amenities, suppose a household faces school closure in their local area, but at the same time get a new neighbor immediately next door that they find unpleasant. Is the decision to move then the result of the school closure or the new neighbor? There is no clear answer to this and illustrates why these effects are difficult to disentangle.
+
+Furthermore, the dynamic nature of households preferences in and of itself also pose a threat to the identification of Schelling behavior. Consider the following Bellman equation that recursively maps utility over time:
+
+\begin{equation}
+    V_{i, j,t} = f(Z_{i,t}, X_{j,t}, \xi_{j,t}, \alpha) + \sum_k g(Z_{i,t}, Z_{k,t}, D_{i,k}, \beta) + \delta \mathbf{E}[V_{i,j,t+1}]+\epsilon_{i,j,t}
+\end{equation}
+
+Where $\delta$ is a discount rate. The second part of the Bellman equation highlights the issue of expectation for the future development of the neighborhood. If a households get a new neighbor with a different ethnicity, do incumbent households respond directly to the ethnicity of their neighbor or is the new neighbor a signal of future neighborhood development that may or may not be to their taste?
+
+This framework formalizes the intuition behind Schelling's classic model of segregation \textcite{schelling1971dynamic} but extends it by explicitly accounting for both the spatial dimension of neighbor interactions and the forward-looking nature of household decision-making. The challenge is to empirically separate direct preferences over neighbor attributes from responses to correlated neighborhood characteristics or expectations.
 
 \subsection{Empirical strategy}
-To account for the issues above and ensure credible identification, I compare native (etnically Danish) households who live in the same neighborhood and receive new non-west neighbors at slightly different distances. Specifically, I compare households who receive a new non-west neighbors among their \textit{nearest} neighbors to those who receive a new non-West neighbor "just down the road". 
+To account for the issues above and ensure credible identification, I compare native and non-Western households who live in the same neighborhood and receive new different-type neighbors at slightly different distances.  Specifically, I compare households who receive a new different-type neighbors among their \textit{nearest} neighbors to those who receive a new different-type neighbor "just down the road". I denote these "treated" and "control" households. The difference in moving propensity between the two is an estimate of Schelling behavior. Intuitively, this makes sense, because i) treated and control households live in the same neighborhood and thus experience (practically) the same (un)pleasantries of the local area and ii) they experience (almost) the same signal of future neighborhood development. I formalize this intuition in more detail below following \textcite{Bayer_2022_nearest_neighbor}.
 
-In this paper, I focus on $K=40$ nearest neighbors.
-\footnote{The choice is in part due to computational constraints, as datasets on this form quickly explode in size. Further, I do this to compare results with \textcite{Bayer_2022_nearest_neighbor} who narrows the scope at the same scale.} Consider a home $i$. The closest neighbors to $i$ are homes $j\neq i$ ordinally ranked for rank $K$ in distance from $i$.
+Consider a home $i$. The closest neighbors to $i$ are homes $j\neq i$ ordinally ranked for rank $K$ in distance from $i$. 
+In this paper, I focus on $K=40$ nearest neighbors.\footnote{The choice is in part due to computational constraints, as datasets on this form quickly explode in size. Further, I do this to compare results with \textcite{Bayer_2022_nearest_neighbor} who narrows the scope at the same scale.}
 
 I define nearest neighbors as those living at rank $k_{nearest}\in \{1, 2, 3\}$ and those "just down the road" as those $k_{close} \in \{4, ..., 40\}$. I denote these as "treatment" and "control", respectively.
 
@@ -32,9 +48,9 @@ With Eq. \ref{eq:utility_household_moving} in mind and abstracting from the time
     Y_i(e', k) = \mathcal{P}[e', k] + \xi_i B(e', k) + \rho_i + \omega_j
 \end{equation}
 
-The first term denotes the 'tipping point' in the spirit of \textcite{schelling1971dynamic}, ie. the direct preference $\mathcal{P}$ for living close to a $k$-nearest neighbor of different ethnicity.\footnote{Note, that this is not a direct estimation "tipping point" of \textcite{schelling1971dynamic}. To my knowledge, the closest to this is work by \textcite{bohlmark_willen_2020_tipping} who estimate city-level tipping points in Sweden.}   The second term denotes the difference in future amenities related  to the arrival of a new non-west K-nearest neighbor. Finally, $\rho_i$ and $\omega_j$ captures the idiosyncratic factors which affect household $i$'s moving propensity and neighborhood $j$ as a whole. 
+The first term denotes the 'tipping point' in the spirit of \textcite{schelling1971dynamic}, ie. the direct preference $\mathcal{P}$ for living close to a $k$-nearest neighbor of different ethnicity.\footnote{Note, that this is not a direct estimation "tipping point" of \textcite{schelling1971dynamic}. To my knowledge, the closest to this is work by \textcite{bohlmark_willen_2020_tipping} who estimate city-level tipping points in Sweden.}   The second term denotes the difference in future amenities related  to the arrival of a new different-type K-nearest neighbor. Finally, $\rho_i$ and $\omega_j$ captures the idiosyncratic factors which affect household $i$'s moving propensity and neighborhood $j$ as a whole. 
 
-I am specifically interested in $\mathcal{P}[e', k_{near}]$, ie. the moving propensity in response to a new non-west neighbor among your \textbf{nearest} neighbors. To do so, I difference the moving propensity between those who get a new non-west neighbor $a$ among your $k_{nearest}$ to those who get a new non-west neighbor $b$ slightly further away, $k_{near}$ in a neighborhood $j$:
+I am specifically interested in $\mathcal{P}[e', k_{near}]$, ie. the moving propensity in response to a new different-type neighbor among your \textbf{nearest} neighbors. To do so, I difference the moving propensity between those who get a new different-type neighbor $a$ among your $k_{nearest}$ to those who get a new different-type neighbor $b$ slightly further away, $k_{near}$ in a neighborhood $j$:
 \begin{equation}
 \begin{split}
     Y_a(e', k_{nearest}) - Y_b(e', k_{near}) &=( \mathcal{P}[e', k_{nearest}] - \mathcal{P}[e', k_{near}]) \\
@@ -46,27 +62,26 @@ I am specifically interested in $\mathcal{P}[e', k_{near}]$, ie. the moving prop
 
 %Conditional on being similar in characteristics, the difference in moving propensity between the two groups of households would yield a causal estimate of the "Schelling behavior" if the following key identifying assumptions are met
 
-First, I assume that $\mathcal{P}[e', k_{nearest}] - \mathcal{P}[e', k_{near}] > 0$, which is to say that the effect of getting a new non-west neighbor among your K-nearest neighbors is greater than that just further away. This implies that any effect I may find is likely to be a lower bound of the effect in getting a new non-west neighbor. Conversely, I find the assumption $\mathcal{P}[e', k_{near}] = 0$ too strong to make. This assumption implies zero effect on the moving propensity of getting a new non-west neighbor just outside your nearest neighbors. Something about also on being infeasible in terms of the utility function above...
+First, I assume that $\mathcal{P}[e', k_{nearest}] - \mathcal{P}[e', k_{near}] > 0$, which is to say that the effect of getting a new different-type neighbor among your K-nearest neighbors is greater than that just further away. This implies that any effect I may find is likely to be a lower bound of the effect in getting a new different-type neighbor. Conversely, I find the assumption $\mathcal{P}[e', k_{near}] = 0$ too strong to make. This assumption implies zero effect on the moving propensity of getting a new different-type neighbor just outside your nearest neighbors. Something about also on being infeasible in terms of the utility function above...
 
-Second, I assume that $\xi_a B(e', k_{nearest}) - \xi_b B(e', k_{near})=0$, or, in other words, that the difference in expectations of future amenities (and house prices?) following a new non-west neighbor among your closest and close neighbor is indistinguishable. Distance to school, shops etc is likely to be very similar for a set of neighboring households. 
+Second, I assume that $\xi_a B(e', k_{nearest}) - \xi_b B(e', k_{near})=0$, or, in other words, that the difference in expectations of future amenities (and house prices?) following a new different-type neighbor among your closest and close neighbor is indistinguishable. Distance to school, shops etc is likely to be very similar for a set of neighboring households. 
 
 This leaves:
 \begin{equation}
     Y_a(e', k_{nearest}) - Y_b(e', k_{near}) = \mathcal{P}[e', k_{nearest}]^* + \rho_a - \rho_b
 \end{equation}
 
-Finally, from the perspective of incumbent households, new neighbors are quasi-randomly assigned within the local neighborhood $j$, such that $\rho_a - \rho_b \perp \mathcal{P}[e', k_{nearest}]^*$. In other words, the specific home where a new neighbor moves in is not systematically related to the existing homeowner's individual preferences. If the arrival was not random, then I cannot say whether an incumbent homeowner moves in response to new non-west neighbor or due to the neighborhood characteristics that may influence the new neighbor's choice of location. 
+Finally, from the perspective of incumbent households, new neighbors are quasi-randomly assigned within the local neighborhood $j$, such that $\rho_a - \rho_b \perp \mathcal{P}[e', k_{nearest}]^*$. In other words, the specific home where a new neighbor moves in is not systematically related to the existing homeowner's individual preferences. If the arrival was not random, then I cannot say whether an incumbent homeowner moves in response to new different-type neighbor or due to the neighborhood characteristics that may influence the new neighbor's choice of location. 
 
-Averaging over $J$ neighborhoods yields a consistent estimate of the average treatment on the treated (ATT) $\overline{Y(e', k_{nearest}) - Y(e', k_{near})}$ conditional on observable characteristics. 
+Averaging over $J$ neighborhoods yields a consistent estimate of the average treatment on the treated (ATT) $\overline{Y(e', k_{nearest}) - Y(e', k_{near})}$ conditional on observable characteristics, which is formalized below: 
 \begin{equation}
     Y_{i, j, t} = \beta_1 \mathbb{I}[r', k=n_{nearest}] + \beta_2 \mathbb{I}[r', k = n_{near}] + \beta_3 \mathbb{I}[r', k = n_{close}]  + \gamma Z_{i, j, t} + \omega_{j, t} + \epsilon_{i, j, t}
     \label{eq:main_eq_schelling_behavior}
 \end{equation}
 
-$Y_{i, j, t}$ denotes the outcome of interest, an indicator for whether household $i$ moves within a given time period following the a new non-west neighbor. Standard errors are clustered at the neighborhood(?)-year level.
+$Y_{i, j, t}$ denotes the outcome of interest, an indicator ($\times100$) for whether household $i$ moves within a given time period following the a new different-type neighbor. 
 
-The parameter(s) of interest is $\beta_1 - \beta_3$ (or $\beta_1 - \beta_3$), which represents the difference in moving propensity in response to a new non-west neighbor. $k_{nearest} \in \{1, 2, 3\}$, $k_{near} \in \{4, 5, 6\}$ and $k_{close} \in \{[11-20], [21-30], [31-40]\}$.
+The parameter(s) of interest is $\beta_1 - \beta_3$, which represents the difference in moving propensity in response to a new non-west neighbor. $k_{nearest} \in \{1, 2, 3\}$, $k_{near} \in \{4, 5, 6\}$ and $k_{close} \in \{[11-20], [21-30], [31-40]\}$.
 
-The inclusion neighborhood-by-quarter effects $\omega_{j,t}$ implies that I am comparing household that are within the same neighborhood at the same time. 
-
+The inclusion of neighborhood-by-quarter fixed effects $\omega_{j,t}$ is central to my identification strategy. These fixed effects ensure I compare only households within the same neighborhood during in the same time period, thereby controlling for all time-varying neighborhood characteristics that might simultaneously affect both the arrival of different-type neighbors and moving decisions. 
 \end{document}
