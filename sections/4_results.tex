@@ -3,21 +3,34 @@
 \section{Results}
 \label{sec:results}
 
-...
+Table \ref{tab:main_results_native} and \ref{tab:main_results_non_west} report estimates $\beta_1-\beta_3$ from equation \ref{eq:main_eq_schelling_behavior} as proxy for Schelling behavior. All columns include neighborhood-by-quarter fixed effects ($\omega_{j,t}$ from equation \ref{eq:main_eq_schelling_behavior}) to facilitate comparable analysis. The first column has no further covariates added. 
 
-Sample of ~200,000 households of ethnically Danish origin (all household members are of Danish ethnicity) from 2017-2019 who earn from DKK 100,000 to 1,500,000 DKK. They \textit{all} at some point experience getting a new non-west neighbor (defined as a household with at least one member from non-west origin). Apart from neighborhood-by-quarter FE, no further controls are added. Given that people are in a state of flow, I have devised a "stable" definition of a household.
+For native households, the estimate indicate an increase in moving propensity of 0.9 percentage points if a native households gets a new non-west neighbor among their nearest neighbor than among their $K=[11-20]$-nearest neighbor. As expected from the balance tests, however, this effect dampens if we add control variables for real equivalised income, tenure and the age of oldest household member in succession. The preferred specification in column 4 indicate an incremental moving response of 0.7 percentage points. 
+
+For non-Western households, estimates of Schelling behavior remain at lower levels than that of their native counterparts. For the same ordinal neighbor rank, the estimate of my preferred specification in column 4 indicate Schelling behavior that are about half as intense for non-Western households as it is for native households. 
+
+If we compare these estimates to the mean of the dependent variable across the different types of household, these translate to an increase in moving propensity of $\frac{0.7}{20} = 3.5$ pct. for native households and $\frac{0.36}{20}=1.8$ pct. for non-Western households within 2 years. 
 
 \begin{table}[H]
-\centering
-    \caption{a}
-    %\begin{adjustbox}{width=\textwidth, center}
-        \input{tabs/main_results.tex}
-    %\end{adjustbox}
-    \label{tab:descriptives_native_and_non_west}
-\begin{tablenotes}[flushleft]
-\item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001 \\ \textit{Note:}
-\end{tablenotes}
+    \caption{Estimates of Schelling behavior (native households)}
+    \label{tab:main_results_native}
+    \begin{threeparttable}
+            \input{tabs/main_results.tex}
+    \begin{tablenotes}[flushleft]
+    \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the municipality-year level. The table reports the estimate of $\beta_1 - \beta_3$ from equation \ref{eq:main_eq_schelling_behavior}. Control variables include dummies for 4 income bins ("Income") in the table, 4 tenure bins and 3 
+    \end{tablenotes}
+    \end{threeparttable}
 \end{table}
 
+\begin{table}[H]
+    \caption{Estimates of Schelling behavior (non-Western households)}
+    \label{tab:main_results_non_west}
+    \begin{threeparttable}
+            \input{tabs/main_results_non_west}
+    \begin{tablenotes}[flushleft]
+    \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the municipality-year level. The table reports the estimate of $\beta_1 - \beta_3$ from equation \ref{eq:main_eq_schelling_behavior}. 
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
 
 \end{document}

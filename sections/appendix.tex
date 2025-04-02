@@ -1,11 +1,53 @@
 \documentclass[../main.tex]{subfiles}
 \begin{document}
 \counterwithin{figure}{section}
+\counterwithin{table}{section}
+\section{Additional tables}
+
+
+
+
+
+\begin{table}[H]
+    \centering
+    \caption{Balance test (native)}
+    \resizebox{\textwidth}{!}{\input{tabs/balance_test_full.tex}}
+    \label{tab:balance_test_native_full}
+    \begin{tablenotes}[flushleft]
+\item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001 \\ \textit{Note:} Standard errors (in parenthesis) are clustered at the municipality-year level. The table reports the estimate of $\phi_1 - \phi_3$ from equation \ref{eq:balance_tests}. 
+\end{tablenotes}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Balance test (non-Western)}
+    \resizebox{\textwidth}{!}{\input{tabs/balance_test_full_non_west.tex}}
+    \label{tab:balance_test_non_west_full}
+    \begin{tablenotes}[flushleft]
+\item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001 \\ \textit{Note:} Standard errors (in parenthesis) are clustered at the municipality-year level. The table reports the estimate of $\phi_1 - \phi_3$ from equation \ref{eq:balance_tests}. 
+\end{tablenotes}
+\end{table}
+
+\begin{table}[H]
+    \caption{Estimate of Schelling behavior (native households)}
+    \centering
+    \begin{threeparttable}
+        
+    %\begin{adjustbox}{width=\textwidth, center}
+        \input{tabs/main_results_full.tex}
+    %\end{adjustbox}
+    \label{tab:main_results_full}
+\begin{tablenotes}[flushleft]
+\item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001 \\ \textit{Note:} Standard errors (in parenthesis) are clustered at the municipality-year level. The table reports the estimate of $\beta_k - \beta_3$ from equation \ref{eq:main_eq_schelling_behavior} for each distance band. 
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
 
 \section{Additional figures}
 \begin{figure}
 \centering
-\caption{Incidence of new different-type neighbors at the neighborhood level} \label{fig:incidence_different_type_neighborhood}
+\caption{Incidence of new different-type neighbors at the neighborhood level} \label{fig:incidence_different_type_neighborhood_unconstrained}
 	\begin{subfigure}{.5\textwidth}	
 	\centering
 	\includegraphics[width=\textwidth]{figs/ishoj_howdy_neighbor.pdf}	
@@ -23,14 +65,14 @@
 	\caption{Copenhagen}
 	\end{subfigure}	
 \begin{tablenotes}
-\item \footnotesize \textit{Note:} The figure show the variation in receiving a new-non West neighbor for native households at the \textit{neighborhood} scale for three different municipalities. Neighborhoods not in the sample are greyed out. Household types are split up in three types (native/non-West/West), see section \ref{sec:intro_definitions} for more details. Neighborhoods are defined in section \ref{sec:data_geospatial}. See Figure \ref{fig:incidence_new_non_west_neighbors_appendix} for an unconstrained version of this figure.
+\item \footnotesize \textit{Note:} The figure show the variation in receiving a new-non West neighbor for native households at the \textit{neighborhood} scale for three different municipalities. Neighborhoods not in the sample are greyed out. Household types are split up in three types (native/non-West/West), see section \ref{sec:intro_definitions} for more details. Neighborhoods are defined in section \ref{sec:data_geospatial}. 
 \end{tablenotes}
-\label{fig:incidence_new_non_west_neighbors}
+\label{fig:incidence_new_non_west_neighbors_unconstrained}
 \end{figure}
 
 \section{The Schelling Model}
 
-\label{sec:appendix_schelling}
+\label{sec:appendix_schelling_model_simulation}
 
 Consider a stylized example of Schelling's residential model: 
 An $N \times N$ matrix $\textbf{M}$ represents possible residential locations. Two types af agents $b, r$, graphically depicted as blue and red, respectively, are initially allocated a random location within this grid. Agents can differ in terms of ethnicity, income, culture etc. 

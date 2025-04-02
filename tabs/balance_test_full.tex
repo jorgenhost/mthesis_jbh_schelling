@@ -2,25 +2,22 @@
 \toprule
   & Income (1,000) & Net wealth (1,000) & Oldest HH member (years) & Tenure (days) & Employed & Educ. length (years) & HH size\\
 \midrule
-New diff-type neighbor \$k\_\{nearest\}\$ v \$k\_\{close,20\}\$ & \num{-1.869}*** & \num{-3.552}*** & \num{-0.142}*** & \num{-51.378}*** & \num{-0.004}*** & \num{-0.054}*** & \num{-0.024}***\\
- & (\num{0.244}) & (\num{0.518}) & (\num{0.039}) & (\num{5.439}) & (\num{0.001}) & (\num{0.011}) & (\num{0.003})\\
-New diff-type neighbor \$k\_\{near\}\$ v \$k\_\{close,20\}\$ & \num{-0.560}** & \num{-1.672}*** & \num{-0.102}*** & \num{-54.210}*** & \num{-0.003}*** & \num{-0.019}*** & \num{-0.016}***\\
- & (\num{0.188}) & (\num{0.328}) & (\num{0.017}) & (\num{6.352}) & (\num{0.001}) & (\num{0.004}) & (\num{0.002})\\
-New diff-type neighbor \$k\_\{close,10\}\$ v \$k\_\{close,20\}\$ & \num{-0.536}** & \num{-1.040}** & \num{-0.075}*** & \num{-32.680}*** & \num{-0.002}*** & \num{-0.009}** & \num{-0.010}***\\
- & (\num{0.178}) & (\num{0.320}) & (\num{0.009}) & (\num{4.182}) & (\num{0.001}) & (\num{0.003}) & (\num{0.002})\\
-New diff-type neighbor \$k\_\{close ,20\}\$ v \$k\_\{close ,20\}\$ (omitted) & \num{0.000} & \num{0.000} & \num{0.000} & \num{0.000} & \num{0.000} & \num{0.000} & \num{0.000}\\
- & (\num{0.000}) & (\num{0.000}) & (\num{0.000}) & (\num{0.000}) & (\num{0.000}) & (\num{0.000}) & (\num{0.000})\\
-New diff-type neighbor \$k\_\{close,30\}\$ v \$k\_\{close,20\}\$ & \num{0.932}*** & \num{1.367}*** & \num{0.125}*** & \num{41.767}*** & \num{0.002}** & \num{0.012}* & \num{0.014}**\\
- & (\num{0.194}) & (\num{0.260}) & (\num{0.018}) & (\num{4.705}) & (\num{0.001}) & (\num{0.006}) & (\num{0.004})\\
-New diff-type neighbor \$k\_\{close,40\}\$ v \$k\_\{close,20\}\$ & \num{1.311}*** & \num{3.312}*** & \num{0.240}*** & \num{71.615}*** & \num{0.002} & \num{0.026}* & \num{0.024}*\\
- & (\num{0.383}) & (\num{0.474}) & (\num{0.024}) & (\num{11.790}) & (\num{0.001}) & (\num{0.013}) & (\num{0.010})\\
+New diff-type neighbor $k_{nearest}$ v $k_{close,20}$ & -1.869*** & -3.552*** & -0.142*** & -51.378*** & -0.004*** & -0.054*** & -0.024***\\
+ & (0.244) & (0.518) & (0.039) & (5.439) & (0.001) & (0.011) & (0.003)\\
+New diff-type neighbor $k_{near}$ v $k_{close,20}$ & -0.560** & -1.672*** & -0.102*** & -54.210*** & -0.003*** & -0.019*** & -0.016***\\
+ & (0.188) & (0.328) & (0.017) & (6.352) & (0.001) & (0.004) & (0.002)\\
+New diff-type neighbor $k_{close,10}$ v $k_{close,20}$ & -0.536** & -1.040** & -0.075*** & -32.680*** & -0.002*** & -0.009** & -0.010***\\
+ & (0.178) & (0.320) & (0.009) & (4.182) & (0.001) & (0.003) & (0.002)\\
+New diff-type neighbor $k_{close ,20}$ v $k_{close ,20}$ (omitted) & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000\\
+ & (0.000) & (0.000) & (0.000) & (0.000) & (0.000) & (0.000) & (0.000)\\
+New diff-type neighbor $k_{close,30}$ v $k_{close,20}$ & 0.932*** & 1.367*** & 0.125*** & 41.767*** & 0.002** & 0.012* & 0.014**\\
+ & (0.194) & (0.260) & (0.018) & (4.705) & (0.001) & (0.006) & (0.004)\\
+New diff-type neighbor $k_{close,40}$ v $k_{close,20}$ & 1.311*** & 3.312*** & 0.240*** & 71.615*** & 0.002 & 0.026* & 0.024*\\
+ & (0.383) & (0.474) & (0.024) & (11.790) & (0.001) & (0.013) & (0.010)\\
 \midrule
 N & 5369040 & 5369040 & 5369040 & 5369040 & 5369040 & 5303037 & 5368343\\
 Neighborhood-by-quarter FE & X & X & X & X & X & X & X\\
 Mean of dependent variable & 340.09 & 60.07 & 44.09 & 2649.96 & 0.84 & 12.83 & 1.69\\
 Number of neighborhoods & 3443 & 3443 & 3443 & 3443 & 3443 & 3443 & 3443\\
 \bottomrule
-\multicolumn{8}{l}{\rule{0pt}{1em}* p $<$ 0.05, ** p $<$ 0.01, *** p $<$ 0.001}\\
-\multicolumn{8}{l}{\rule{0pt}{1em}Standard errors (in parenthesis) are clustered at the municipality-year level.}\\
-\multicolumn{8}{l}{\rule{0pt}{1em}Neighborhoods are heuristically aggregated from Nabolagsatlas.dk to contain a minimum of 500 people.}\\
 \end{tabular}

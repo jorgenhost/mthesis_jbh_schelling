@@ -81,7 +81,16 @@ Averaging over $J$ neighborhoods yields a consistent estimate of the average tre
 
 $Y_{i, j, t}$ denotes the outcome of interest, an indicator ($\times100$) for whether household $i$ moves within a given time period following the a new different-type neighbor. 
 
-The parameter(s) of interest is $\beta_1 - \beta_3$, which represents the difference in moving propensity in response to a new non-west neighbor. $k_{nearest} \in \{1, 2, 3\}$, $k_{near} \in \{4, 5, 6\}$ and $k_{close} \in \{[11-20], [21-30], [31-40]\}$.
+The parameter(s) of interest is $\beta_1 - \beta_3$, which represents the difference in moving propensity in response to a new different-type neighbor. I choose to segment and add treatments in "bins" of ordinal ranks K. Specifically, I define $k_{nearest} \in \{1, 2, 3\}$, $k_{near} \in \{4, 5, 6\}$ and $k_{close} \in \{[11-20], [21-30], [31-40]\}$.
 
-The inclusion of neighborhood-by-quarter fixed effects $\omega_{j,t}$ is central to my identification strategy. These fixed effects ensure I compare only households within the same neighborhood during in the same time period, thereby controlling for all time-varying neighborhood characteristics that might simultaneously affect both the arrival of different-type neighbors and moving decisions. 
+
+
+The inclusion of neighborhood-by-quarter fixed effects $\omega_{j,t}$ is central to my identification strategy. These fixed effects ensure I compare only households within the same neighborhood in the same time period, thereby controlling for all time-varying neighborhood characteristics that might simultaneously affect both the arrival of different-type neighbors and moving decisions. 
 \end{document}
+I define treatments in "bins" of ordinal ranks K rather than individual ranks for several methodological and theoretical reasons. First, binning provides statistical power by aggregating similar treatment effects, reducing noise that might arise from examining each individual rank separately. By grouping the ranks into meaningful proximity categories ($n_{nearest}$, $n_{near}$, and $n_{far}$), I can detect patterns that might be obscured in rank-by-rank analysis.
+
+Second, this approach aligns with the theoretical framework of social interactions, where the intensity of neighbor effects likely follows a step function rather than changing continuously with each incremental distance unit. The bins correspond to conceptually distinct zones of interaction: immediate neighbors with whom interactions are frequent and unavoidable (ranks 1-3), moderately close neighbors with whom interactions are common but not constant (ranks 4-6), and more distant neighbors within visual and social range but with whom interactions are more sporadic (ranks 11-40).
+
+Third, binning addresses potential measurement error in precise distance rankings. While a KD-tree provides exact ordinal rankings, the social significance of being the 4th versus 5th nearest neighbor is likely indistinguishable, whereas the difference between being in the immediate vicinity versus slightly further away captures a meaningful threshold in social distance.
+
+Finally, this binned approach facilitates direct comparison with \textcite{bayer2022distinguishing}, who contrast immediate next-door neighbors with those "two to three doors away," allowing me to test whether their findings using address-based proximity measures generalize to my KD-tree based nearest neighbor approach. The parameter of interest, $\beta_1 - \beta_2$, captures the essence of their identification strategy while leveraging the computational efficiency of KD-trees for large-scale spatial analysis.
