@@ -1,16 +1,13 @@
 \begin{tabular}[t]{lccccccc}
 \toprule
-  & Income (1,000) & Net wealth (1,000) & Oldest HH member (years) & Tenure (days) & Employed & Educ. (years) & HH size\\
+  & Income (1,000) & Net wealth (1,000) & Oldest HH member (years) & Tenure (days) & Employed & Educ. length (years) & HH size\\
 \midrule
-New diff-type neighbor $k_{nearest}$ v $k_{close,20}$ & -1.869*** & -3.552*** & -0.142*** & -51.378*** & -0.004*** & -0.054*** & -0.024***\\
- & (0.244) & (0.518) & (0.039) & (5.439) & (0.001) & (0.011) & (0.003)\\
+New diff neighbor $k_{nearest}$ v $k_{near}$ & -1.408*** & -1.903*** & -0.043* & 1.936 & -0.002** & -0.035* & -0.009***\\
+ & (0.254) & (0.402) & (0.020) & (5.999) & (0.001) & (0.014) & (0.002)\\
 \midrule
-N & 5,369,040 & 5,369,040 & 5,369,040 & 5,369,040 & 5,369,040 & 5,303,037 & 5,368,343\\
+N & 5,365,811 & 5,365,811 & 5,365,811 & 5,365,811 & 5,365,811 & 5,365,811 & 5,365,811\\
 Neighborhood-by-quarter FE & X & X & X & X & X & X & X\\
-Mean of dependent variable & 340.09 & 60.07 & 44.09 & 2649.96 & 0.84 & 12.83 & 1.69\\
-Number of neighborhoods & 3443 & 3443 & 3443 & 3443 & 3443 & 3443 & 3443\\
+Mean of dependent variable & 341.26 & 60.61 & 44.05 & 2646.87 & 0.84 & 10.11 & 1.70\\
+Number of neighborhoods & 3444 & 3444 & 3444 & 3444 & 3444 & 3444 & 3444\\
 \bottomrule
-%\multicolumn{8}{l}{\rule{0pt}{1em}* p $<$ 0.05, ** p $<$ 0.01, *** p $<$ 0.001}\\
-%\multicolumn{8}{l}{\rule{0pt}{1em}Standard errors (in parenthesis) are clustered at the municipality-year level.}\\
-%\multicolumn{8}{l}{\rule{0pt}{1em}Neighborhoods are heuristically aggregated from Nabolagsatlas.dk to contain a minimum of 500 people.}\\
 \end{tabular}

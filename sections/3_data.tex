@@ -18,7 +18,7 @@ Specifically, I combine the following core registers:
     
     \item Labor market register (\boldsf{RAS}): Records labor market attachment, from which I obtain employment status (\textbf{beskst13}).
     
-    \item Education register (\boldsf{UDDF}): Documents educational attainment, from which I extract highest completed education level (\textbf{hfaudd}), categorized according to the DISCED-15 classification system.\footnote{For details on the DISCED-15 classification, see \textcite{dst_disced_edu}.}
+    \item Education register (\boldsf{UDDF}): Documents educational attainment, from which I extract highest completed education level (\textbf{hfaudd}), categorized according to the DDU nomenclature and converted to education length in years.\footnote{Exact categorization of completed education length in years can be found in table \ref{tab:dst_disced15_educ_length_classification}. For details on the DDU nomenclature, see \textcite{dst_ddu_edu}.}
 \end{itemize}
 
 \subsection{Geospatial}
@@ -32,10 +32,12 @@ The main dataset I use is \boldsf{BOPAEL\_KOORD}. This dataset contains all hist
 \noindent
 Where $\textbf{p}$ is a tuple of x/y/z-coordinates, where subscripts denote east, north, floor and door, respectively, in the ETRS89-projection. This projection is specifically tailored to Northern Europe such that distances between coordinates, whether these are Manhattan or euclidean, are measured in meters. Crucially, the dataset contain both the start and end date of residency at those coordinates. These are derived administrative data, where individuals report their main address. Thus, in effect, the outcome of "moving" is synonymous with a "change in address". 
 
+\textcolor{red}{Incorporate how distance is measured in terms of sidedoer}
+
 A key component of my identification strategy is that I specify which \textit{neighborhood} a household lives in at a given point in time. This is parameterized by $\omega_{j,t}$ in equation \ref{eq:main_eq_schelling_behavior}. There exists no clear consensus of what constitutes a neighborhood in the geopgrahical sense. For instance, I could use administrative borders such as municipalities or parishes. However, I believe there is a number of issues by doing this. First, municipalities are way too large to elicit salient social interactions and, second, I believe parishes to have borders that are too inconsistently drawn.\footnote{In 2024, the sizes of parishes ranged from less than 100 to over 20,000 inhabitants (\textcite{dst_sogn_stats}).} I rely on work by \textcite{nabolagsatlas_neighborhoods_boje2023}, who use the Danish Kvadratnet, a graphical representation of Denmark as squares down to the 100m-by-100m level, to delineate "fixed" neighborhoods as polygons that contain at least 100 inhabitants. To do this, they apply a heuristic version of the MaxP-regionalization algorithm by \textcite{maxp_heuristic_wei2021efficient}. Because I fear that the outcome of moving in may be relative sparse in some areas, I elect to further aggregate this to the level of a minimum 500 inhabitants to strike a balance between variation and salient social interactions. 
 
 \subsection{Nearest neighbors}
-With the definition of households and geospatial dataset in mind, I now describe the approach for identifying nearest neighbors. From the dataset $\mathbf{p}$, I construct a KD-tree (\textcite{bentley1975multidimensional}) containing all unique addresses. The KD-tree efficiently partitions a $k$-dimensional space to enable fast spatial queries. In my application, $k=4$, corresponding to the 4-dimensional point representation in $\mathbf{p}$.
+With the definition of households and geospatial dataset in mind, I now describe the approach for identifying nearest neighbors. From $\mathbf{p}$, I construct a KD-tree (\textcite{bentley1975multidimensional}) containing all unique addresses. The KD-tree efficiently partitions a $k$-dimensional space to enable fast spatial queries. In my application, $k=4$, corresponding to the 4-dimensional point representation in $\mathbf{p}$.
 
 The KD-tree construction follows a recursive process where the dataset is split along alternating dimensions at each level. At each node, the data is partitioned using the median value along the current dimension, creating a balanced tree structure.
 For any query point $q \in \mathbb{R}^4$, I can efficiently retrieve either the $K$ nearest neighbors (by ordinal rank), which is what I focus on, or all neighbors within a specified radius $r$. 
@@ -68,7 +70,7 @@ The first part of equation \ref{eq:edge_weights} expresses how much sequence $i$
 
 Consider the fact that not all members of a household may move out around the same time, which further complicates credible identification of "Schelling behavior". For example, suppose person A and person B moves in at the same time in a home. Person A moves out just before B, but a person C moves into the home and lives with person B for a short amount of time, before B moves out. Linking the sequences together, or in graph theory terms identifying \textit{connected components}, would yield a single household of A, B and C, when it most intuitively makes sense to have A and B as one household and C as another. 
 
-To formalize this approach, I use administrative registers as an intermediate to evaluate different "household partitions".\footnote{Specifically, I make use of the \boldsf{familie\_id} variable from the \boldsf{BEF} table that maps groups of people that live at the same address, see \textcite{dst_familie_id}.} Maximizing edge weights defined in equation \ref{eq:edge_weights}, scaled by the size the household partition, is what I define a "household" as. Consider Figure \ref{fig:temporal_community_detection} as an illustration of this approach. Maximizing edge weights would yield three different "stable" households instead of one.
+To formalize this approach, I use administrative registers as an intermediate to evaluate different "household partitions".\footnote{\textcolor{red}{go into a little more detail} Specifically, I make use of the \boldsf{familie\_id} variable from the \boldsf{BEF} table that maps groups of people that live at the same address, see \textcite{dst_familie_id}.} Maximizing edge weights defined in equation \ref{eq:edge_weights}, scaled by the size the household partition, is what I define a "household" as. Consider Figure \ref{fig:temporal_community_detection} as an illustration of this approach. Maximizing edge weights would yield three different "stable" households instead of one.
 \begin{figure}[H]
     \centering
     \caption{Household definition}
@@ -82,9 +84,9 @@ To formalize this approach, I use administrative registers as an intermediate to
 \label{sec:estimation_sample_definition}
 I impose a number of restrictions on the sample of households to build my estimation sample. First, I drop households with gross real yearly incomes below 200,000 DKK and above 1,500,000 DKK. In similar vein, I keep household that have real net wealth (excluding pensions) between -200,000 DKK and 500,000 DKK. I further require that the oldest member of the household is between 30 and 60. These restrictions weeds out instances where members of households may be studying or outside the labor market.  
 
-Next, I restrict my analysis to native and non-West households, following the definition set out in section \ref{sec:intro_definitions}. This choice is mainly drive by the historic fact that Denmark has undergone a transition from a relatively homogenously ethnic society to one with a significantly larger share of people with non-West origins. In 1985, around 1 pct. of people had non-West origin, which grew to around 9 pct. in 2020. This increase has sparked tension and, like with most other European countries, an increase in support for anti-immigration policies (cite). I drop "Western" households in my analysis as previous evidence (cite) mainly points to residential segregation between non-Western immigrants and native households.
+Next, I restrict my analysis to native and non-Western households, following the definition set out in section \ref{sec:intro_definitions}. This choice is mainly drive by the historic fact that Denmark has undergone a transition from a relatively homogenously ethnic society to one with a significantly larger share of people with non-Western origins. In 1985, around 1 pct. of people had non-West origin, which grew to around 9 pct. in 2020. This increase is said to have sparkedan increase in support for anti-immigration policies, like many other European countries. I drop Western households in my analysis as previous evidence (\textcite{bohlmark_willen_2020_tipping, legrand_2002_immigrant_discontent, rockwool_boje2024immigrants}) mainly points to anti-immigration sentiments between native households and non-Western immigrants in a Scandinavian contexte.
 
-Furthermore, I require that the nearest neighbor to a household is within 25 meters. This is to ensure that social interactions between new different-type neighbors are more likely to take place. I present evidence of why this assumption is reasonable in Table \ref{}, as household have limited response to a new different-type nearest neighbor beyond 25 meters. In addition, I focus on neighborhoods with a population between 1,000 and 25,000 people per square kilometers. 
+Furthermore, I require that the nearest neighbor to a household is within 25 meters. This is to ensure that social interactions between new different-type neighbors are more likely to take place. I present evidence of why this assumption is reasonable in Table \ref{tab:main_results_full_100m}, as household have limited response to a new different-type nearest neighbor beyond 25 meters.\footnote{\textcolor{red}{I could actually (and probably should) limit that to 15m or less, but argue that because of potential distance irregularities I increase that number}} In addition, I focus on neighborhoods with a population between 1,000 and 25,000 people per square kilometers. 
 
 \subsection{Summary statistics}
 Figure \ref{fig:incidence_different_type_dk} depicts the incidence of new different-type neighbors among your $K=40$ nearest neighbors for native households split by municipality since 1985. The color scheme is chosen to highlight the intensity of new different-type neighbors that native households receives during their residence. Darker blue/purple colors represent "low" intensity with orange/yellow representing "high" intensity.
@@ -136,11 +138,13 @@ Table \ref{tab:descriptives_native_and_non_west} presents summary statistics for
 
 Table \ref{tab:descriptives_native_and_non_west} reveals an intriguing pattern in the first row across both panels. "Treated" households (both native and non-Western) demonstrate a notably higher likelihood of relocating within the following two years after gaining a different-type neighbor—23-24 percent compared to 19-20 percent for their "control" counterparts. However, a critical consideration for this analysis is that this apparent "Schelling" response could be influenced by various confounding factors, including changes in neighborhood quality or selection effects. This observation underscores the value of employing the nearest neighbor research design, which helps address these potential confounders.
 
-The following rows reveal that treated native households are considerably less wealthy than the full sample of native households (48,000 DKK vs 81,000 DKK) in addition to earning less (336,000 DKK vs 343,000 DKK), but that this difference, though still relatively large, is less between the "treated" and "control" native households. The differences in income and wealth between treated, control and the full sample of Non-Western households are less pronounced, though at levels lower than their native counterparts.
+The following rows reveal that treated native households are considerably less wealthy than the full sample of native households (48,500 DKK vs 81,000 DKK) in addition to earning less (337,000 DKK vs 344,000 DKK), but that this difference, though still relatively large, is less between the "treated" and "control" native households (\textcolor{red}{IS THIS STILL TRUE??)}. The differences in income and wealth between treated, control and the full sample of Non-Western households are less pronounced, though at levels lower than their native counterparts.
 
-Interestingly, non-Western households in the sample are on average better educated (defined as the person in the households with the longest education) than native households. Likewise, treated non-Western households are more educated than control non-Western households, a pattern opposite that of native households. Furthermore, non-Western household are bigger in size and younger than native households. 
+Interestingly, non-Western households in the sample are on average better educated (defined as the person in the households with the longest education) than native households. On average, the difference between them are about 2 years of education for the longest educated household member. Furthermore, non-Western household are bigger in size and younger than native households. 
 
-Table \ref{tab:descriptives_native_and_non_west} also highlights some striking patterns regarding the neighborhood characteristics. First, the neighborhoods in which these experiments happen tend to be concentrated in relatively dense and more integrated neighborhoods. For instance, non-Western households as a whole live in considerably denser neighborhoods than their native counterparts. Second, and perhaps an indication of "Schelling" behavior in and of itself, native households as a whole tend to live in less dense, more affluent and less-integrated neighborhoods. For instance, treated native households live in much denser neighborhoods with double the share of non-Western households (15 percent) compared to the whole sample of native households (8 percent). 
+Table \ref{tab:descriptives_native_and_non_west} also highlights some striking patterns regarding the neighborhood characteristics. First, the neighborhoods in which these experiments happen tend to be concentrated in relatively dense and more integrated (\textcolor{red}{not integrated, but higher share of immi, there is a diff word for it)} neighborhoods in line with figure \ref{fig:incidence_different_type_neighborhood}. For instance, non-Western households as a whole live in considerably denser neighborhoods than their native counterparts. Second, and perhaps an indication of "Schelling" behavior in and of itself, native households tend to live in less dense, more affluent and less-integrated neighborhoods. For instance, treated native households live in much denser neighborhoods with almost double the share of non-Western households (15 percent) compared to the whole sample of native households (8 percent). 
+
+\textcolor{red}{Something about the distance to neighbor}
 
 \begin{table}[H]
     \centering
@@ -157,11 +161,11 @@ When describing the data, I have mostly employed a "static" view of the time per
 
 Furthermore, I have included a quick and dirty "counterfactual" simulation that randomly assigns the type of households with conditional probabilities given by how large the share of native, non-Western and Western households were in 1990.
 
-Let $T_i \in \{\text{native}, \text{non-west}, \text{west}\}$ represent the type of the $i$-th household. For the counterfactual scenario, I maintain the 1990 distribution of household types:
+Let $C_i \in \{\text{native}, \text{non-Western}, \text{Western}\}$ represent the type of the $i$-th household. For the counterfactual scenario, I maintain the 1990 distribution of household types:
 
-$$P(T_i = t) = p_{t,1990}, \quad \text{for } t \in \{\text{native}, \text{non-west}, \text{west}\}$$
+$$P(C_i = c) = p_{c,1990}, \quad \text{for } c \in \{\text{native}, \text{non-Western}, \text{Western}\}$$
 
-where $p_{t,1990}$ is the proportion of households of type $t$ in the year 1990. We draw household types $\{T_1, T_2, \ldots, T_N\}$ from this categorical distribution while maintaining their spatial locations fixed. The resulting share of same-type neighbors $S_i^K$ for each household is then computed based on these counterfactual type assignments.
+where $p_{c,1990}$ is the proportion of households of type $c$ in the year 1990. We draw household types $\{T_1, T_2, \ldots, T_N\}$ from this categorical distribution while maintaining their spatial locations fixed. The resulting share of same-type neighbors $S_i^K$ for each household is then computed based on these counterfactual type assignments.
 
 What is immediately clear from Figure \ref{fig:temporal_development_knn} is that over half of native households (top panel) only have native households as their closest neighbors over time. Furthermore, despite increasing share in the number of non-Western people (and households?, \textcolor{red}{cite/refer to fact}), the "counterfactual" simulation show that this pattern is stable even if we fixed distribution of households types fixed at the the 1990 level. Interestingly, when you focus on the development of your $K=100$ nearest neighbors for native households, the increase in same-type neighbors from 1990 to 2020 is substantial. Around 40 percent had between 80 and 100 same-type neighbors among their $K=100$ nearest neighbors in 1990, which 30 years later has increased to 60 percent. This strongly indicates Schelling behavior for native households.
 
@@ -170,7 +174,7 @@ The picture
 \begin{landscape}
 \begin{figure}
     \centering
-    \caption{Same type neighbor by $K$-proximity (1990-2020)}
+    \caption{Same type neighbor by $K$-nearest proximity (1990-2020)}
     \label{fig:temporal_development_knn}
     \begin{subfigure}{1.5\textwidth}
     \includegraphics[width=\linewidth]{figs/temporal_knn_native_1990_2020_w_sim.pdf}
@@ -190,17 +194,17 @@ The picture
 
 \subsection{Balance test}
 
-Having established indications of Schelling behavior in the previous sections, I now turn to the identification of the parameters of interest $\beta_1-\beta_3$ from equation \ref{eq:main_eq_schelling_behavior}. As defined earlier (\textcolor{red}{did I actually do that?}), this difference represents the supposedly increase in moving propensity of getting a new different-type very close compared to "just down the road". Before diving into the main results, I perform a series of balance tests to determine any potential (mean) differences between the "control" and "treatment" group. To do this, consider the following equation, almost identical to equation \ref{eq:main_eq_schelling_behavior}:
+Having established indications of Schelling behavior in the previous sections, I now turn to the identification of the parameters of interest $\beta_1-\beta_2$ from equation \ref{eq:main_eq_schelling_behavior}. As defined earlier (\textcolor{red}{did I actually do that?}), this difference represents the supposedly increase in moving propensity of getting a new different-type very close compared to "just down the road". Before diving into the main results, I perform a series of balance tests to determine any potential (mean) differences between the "control" and "treatment" group. To do this, consider the following equation, almost identical to equation \ref{eq:main_eq_schelling_behavior}:
 
 \begin{equation}
     X_{i, j, t} = \phi_1 \mathbb{I}[r', k=n_{nearest}] + \phi_2 \mathbb{I}[r', k = n_{near}] + \phi_3 \mathbb{I}[r', k = n_{close}] + \omega_{j, t} + \epsilon_{i, j, t} 
     \label{eq:balance_tests}
 \end{equation}
-Where $\mathbf{X_{i,j,t}}$ are observables at the household level. The coefficient of interest is $\phi_1 - \phi_3$. These include real equivalised income, real equivalised net wealth, oldest household member, tenure, employment status, educational length and household size. Employment is defined as at least one working household member in a given year. Education length is defined as the best educated household member measured in years.\footnote{See Table \textcolor{red}{here} in Appendix of how I calculated education length.}
+Where $\mathbf{X_{i,j,t}}$ are observables at the household level. The coefficient of interest is $\phi_1 - \phi_2$. These include real equivalised income, real equivalised net wealth, oldest household member, tenure, employment status, educational length and household size. Employment is defined as at least one working household member in a given year. Education length is defined as the best educated household member measured in years.
 
-Starting with Table \ref{eq:balance_test_native}, the first two columns show noticeable differences in income and wealth for native households. Those households who get a new non-Western neighbor among their nearest neighbors earn around 2,000 DKK less than control households, who get neighbors among their $K=[11-20]$-closest neighbors. I acknowledge that this poses a threat to identification given the difference in mobility, and thus, potential to move out. However, the remaining columns indicate relatively small differences. The oldest member of treated households are only 0.1 years younger and have lived around 50 days longer than control households. They have almost the same employment rate, are similar in education length and household size. 
+Starting with Table \ref{eq:balance_test_native}, the first two columns show noticeable differences in income and wealth for native households. Those households who get a new non-Western neighbor among their nearest neighbors earn around 1,400 DKK less and own around 1,900 DKK in net assets less than control households, who get new non-Western neighbors among their $K=[4-6]$-closest neighbors. I acknowledge that this poses a threat to identification given the difference in mobility, and thus, potential to move out. However, the remaining columns indicate relatively small differences. The oldest member of treated households are only 0.04 years younger. Furthermore, there is only a difference in around 2 days in tenure between control and treatment households in conjunction with almost the same employment rate, education length and household size. 
 
-Table \ref{tab:balance_test_native} reports corresponding estimates for non-Western households. Interestingly, the difference along the income and wealth dimension between treated and control non-Western households are economically smaller in scale and statistically indistinguishable from zero. The same goes for the difference in employment rates between the two. While there are differences between the groups of non-Western households for the remaining observables, these are relatively small in size as is the case for their native counterpart. Treated non-Western households are on average 0.2 years younger, are similar in size and have difference in tenure length of around 2 months.  
+Table \ref{tab:balance_test_native} reports corresponding estimates for non-Western households. Interestingly, the difference along the income and wealth dimension between treated and control non-Western households are economically smaller in scale and statistically indistinguishable from zero. The same goes for the difference in employment rates, household size and education length between the two. Treated non-Western households are on average 0.06 years younger, are similar in size and have difference in tenure length of around 1 months.  
 
 \begin{table}[H]
     \centering
@@ -208,50 +212,18 @@ Table \ref{tab:balance_test_native} reports corresponding estimates for non-West
     \resizebox{\textwidth}{!}{\input{tabs/balance_test.tex}}
     \label{tab:balance_test_native}
     \begin{tablenotes}[flushleft]
-\item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001 \\ \textit{Note:} Standard errors (in parenthesis) are clustered at the municipality-year level. The table reports the estimate of $\phi_1 - \phi_3$ from equation \ref{eq:balance_tests}. 
+\item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001 Standard errors (in parenthesis) are clustered at the neighborhood level. The table reports the estimate of $\phi_1 - \phi_2$ from equation \ref{eq:balance_tests}. Table \ref{tab:balance_test_native_full} contains the complete set of coefficients.
 \end{tablenotes}
 \end{table}
 
 \begin{table}[H]
     \centering
     \caption{Balance test (non-Western)}
-    \resizebox{\textwidth}{!}{\input{tabs/balance_test_non_west}}
+    \resizebox{\textwidth}{!}{\input{tabs/balance_test_non_west.tex}}
     \label{tab:balance_test_non_west}
     \begin{tablenotes}[flushleft]
-\item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001 \\ \textit{Note:} Standard errors (in parenthesis) are clustered at the municipality-year level. The table reports the estimate of $\phi_1 - \phi_3$ from equation \ref{eq:balance_tests}. 
+\item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001 Standard errors (in parenthesis) are clustered at the neighborhood level. The table reports the estimate of $\phi_1 - \phi_2$ from equation \ref{eq:balance_tests}. Table \ref{tab:balance_test_non_west_full} contains the complete set of coefficients.
 \end{tablenotes}
 \end{table}
 
 \end{document}
-
-
-
-\begin{enumerate}
-    \item Map of "selected" \href{nabolagstlas.dk}{Nabolagsatlas} neighborhoods:
-    \begin{itemize}
-        \item Share of non-west inhabitants (1990 / 2010)
-        \item Avg. no of non-west K-nearest neighbors (1990 / 2010) 
-        \item Map of neighborhoods where the "experiment" occurs
-    \end{itemize}
-    \item Summary stats
-    \begin{itemize}
-        \item Dependent variable (move within 2 years of new K=3/4 nearest neighbor)
-        \item Individual characteristics:
-        \begin{itemize}
-            \item Length of education
-            \item Income (highest earner?)
-            \item Age
-            \item Employed
-            \item ?
-        \end{itemize}
-        \item Neighborhood characteristics
-        \begin{itemize}
-            \item Median/average income,
-            \item Population density
-            \item Non-west share
-            \item Native share
-            \item No. of K=10-nearest non-west neighbors (?)
-        \end{itemize}
-        \item 3-4 columns (cond. on being from DK): All / new non-west neighbor (nearest) / new non-west neighbor (near)
-    \end{itemize}
-\end{enumerate}

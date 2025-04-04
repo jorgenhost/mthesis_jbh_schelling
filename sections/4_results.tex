@@ -3,7 +3,7 @@
 \section{Results}
 \label{sec:results}
 
-Table \ref{tab:main_results_native} and \ref{tab:main_results_non_west} report estimates $\beta_1-\beta_3$ from equation \ref{eq:main_eq_schelling_behavior} as proxy for Schelling behavior. All columns include neighborhood-by-quarter fixed effects ($\omega_{j,t}$ from equation \ref{eq:main_eq_schelling_behavior}) to facilitate comparable analysis. The first column has no further covariates added. 
+Table \ref{tab:main_results_native} and \ref{tab:main_results_non_west} report estimates $\beta_1-\beta_2$ from equation \ref{eq:main_eq_schelling_behavior} as proxy for Schelling behavior. All columns include neighborhood-by-quarter fixed effects ($\omega_{j,t}$ from equation \ref{eq:main_eq_schelling_behavior}) to facilitate comparable analysis. The first column has no further covariates added. 
 
 For native households, the estimate indicate an increase in moving propensity of 0.9 percentage points if a native households gets a new non-west neighbor among their nearest neighbor than among their $K=[11-20]$-nearest neighbor. As expected from the balance tests, however, this effect dampens if we add control variables for real equivalised income, tenure and the age of oldest household member in succession. The preferred specification in column 4 indicate an incremental moving response of 0.7 percentage points. 
 
@@ -17,7 +17,7 @@ If we compare these estimates to the mean of the dependent variable across the d
     \begin{threeparttable}
             \input{tabs/main_results.tex}
     \begin{tablenotes}[flushleft]
-    \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the municipality-year level. The table reports the estimate of $\beta_1 - \beta_3$ from equation \ref{eq:main_eq_schelling_behavior}. Control variables include dummies for 4 income bins ("Income") in the table, 4 tenure bins and 3 
+    \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the neighborhood level. The table reports the estimate of $\beta_1 - \beta_2$ from equation \ref{eq:main_eq_schelling_behavior}. Control variables include dummies for 4 income bins (denoted "Income"), 4 tenure bins (denoted "Tenure") and 3 age bins (denoted "Age") for the oldest household member. Table \ref{tab:main_results_full} contains the complete set of coefficients.
     \end{tablenotes}
     \end{threeparttable}
 \end{table}
@@ -28,9 +28,49 @@ If we compare these estimates to the mean of the dependent variable across the d
     \begin{threeparttable}
             \input{tabs/main_results_non_west}
     \begin{tablenotes}[flushleft]
-    \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the municipality-year level. The table reports the estimate of $\beta_1 - \beta_3$ from equation \ref{eq:main_eq_schelling_behavior}. 
+    \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the neighborhood level. The table reports the estimate of $\beta_1 - \beta_2$ from equation \ref{eq:main_eq_schelling_behavior}. Control variables include dummies for 4 income bins (denoted "Income"), 4 tenure bins (denoted "Tenure") and 3 age bins (denoted "Age") for the oldest household member. Table \ref{tab:main_results_full_non_west} contains the complete set of coefficients.
     \end{tablenotes}
     \end{threeparttable}
 \end{table}
 
+\subsection{Heterogeneity}
+\textcolor{red}{just for the fun of it... include balance tesst for SES estimations}
+\begin{landscape}
+\begin{table}
+    \centering
+    \caption{Estimates of Schelling behavior (native households) by SES}
+    \label{tab:main_results_ses}
+    \begin{threeparttable}
+            \input{tabs/main_results_ses.tex}
+    \begin{tablenotes}[flushleft]
+    \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the neighborhood level. The table reports the estimate of $\beta_1 - \beta_2$ from equation \ref{eq:main_eq_schelling_behavior}. Table \ref{tab:main_results_non_west_ses_full} contains the complete set of coefficients.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+\end{landscape}
+
+\begin{table}[H]
+    \centering
+    \caption{Estimates of Schelling behavior (native households), dropped control}
+    \label{tab:main_results_non_west_I_control}
+    \begin{threeparttable}
+            \input{tabs/main_results_robust_I_control.tex}
+    \begin{tablenotes}[flushleft]
+    \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the neighborhood level. The table reports the estimate of $\beta_1 - \beta_2$ from equation \ref{eq:main_eq_schelling_behavior}. Table \ref{tab:main_results_robust_I_control_full} contains the complete set of coefficients. 
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+
+\begin{table}[H]
+    \centering
+    \caption{Estimates of Schelling behavior (non-Western households), dropped control}
+    \label{tab:main_results_non_west_I_control_non_west}
+    \begin{threeparttable}
+            \input{tabs/main_results_robust_I_control_non_west}
+    \begin{tablenotes}[flushleft]
+    \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the neighborhood level. The table reports the estimate of $\beta_1 - \beta_2$ from equation \ref{eq:main_eq_schelling_behavior}. Table \ref{tab:main_results_robust_I_control_non_west_full} contains the complete set of coefficients. 
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}
 \end{document}
