@@ -41,29 +41,32 @@
     \caption{Estimate of Schelling behavior (native households)}
     \label{tab:main_results_full}
     \centering
+    \begin{adjustbox}{width = 1.1\linewidth, center}
     \begin{threeparttable}
         \input{tabs/main_results_full.tex}
     \begin{tablenotes}[flushleft]
     \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the neighborhood level. The table reports the estimate of $\beta_k - \beta_2$ from equation \ref{eq:main_eq_schelling_behavior} for each distance band $k$, for $k\in {[1-3], [7-10], [11-20], [21-30], [31-40]}$. 
     \end{tablenotes}
     \end{threeparttable}
+    \end{adjustbox}  
 \end{table}
-
 \begin{table}[H]
     \caption{Estimate of Schelling behavior (non-Western households)}
     \label{tab:main_results_full_non_west}
     \centering
+    \begin{adjustbox}{width = 1.1\linewidth, center}
     \begin{threeparttable}
         \input{tabs/main_results_full_non_west.tex}
     \begin{tablenotes}[flushleft]
     \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the neighborhood level. The table reports the estimate of $\beta_k - \beta_2$ from equation \ref{eq:main_eq_schelling_behavior} for each distance band $k$, for $k\in {[1-3], [7-10], [11-20], [21-30], [31-40]}$. 
     \end{tablenotes}
     \end{threeparttable}
+    \end{adjustbox}
 \end{table}
 
 \begin{table}[H]
     \caption{Estimates of Schelling behavior (native households) by SES}
-    \label{tab:main_results_non_west_ses_full}
+    \label{tab:main_results_ses_full}
     \begin{adjustbox}{width = 1.2\linewidth, center}    
     \begin{threeparttable}
             \input{tabs/main_results_ses_full.tex}
@@ -75,46 +78,33 @@
 \end{table}
 
 \begin{table}[H]
+    \caption{Estimates of Schelling behavior (non-Western households) by SES}
+    \label{tab:main_results_ses_non_west_full}
+    \begin{adjustbox}{width = 1.2\linewidth, center}    
+    \begin{threeparttable}
+            \input{tabs/main_results_ses_non_west_full}
+    \begin{tablenotes}[flushleft]
+    \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the neighborhood level. The table reports the estimate of $\beta_1 - \beta_2$ from equation \ref{eq:main_eq_schelling_behavior} for each distance band $k$, for $k\in {[1-3], [7-10], [11-20], [21-30], [31-40]}$. 
+    \end{tablenotes}
+    \end{threeparttable}
+    \end{adjustbox}
+\end{table}
+
+\begin{table}[H]
     \centering
-    \caption{Estimates of Schelling behavior (native households), dropped control}
+    \caption{Estimates of Schelling behavior (native households), combined control}
     \label{tab:main_results_robust_I_control_full}
     %\begin{adjustbox}{width = \linewidth, center}    
     \begin{threeparttable}
             \input{tabs/main_results_robust_I_control_full}
     \begin{tablenotes}[flushleft]
-    \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the neighborhood level. The table reports the estimate of $\beta_1 - \beta_2$ from equation \ref{eq:main_eq_schelling_behavior}. 
+    \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the neighborhood level. The table reports the estimate of $\gamma_1 - \gamma_2$ from equation \ref{eq:main_eq_schelling_behavior_I_control}. 
     \end{tablenotes}
     \end{threeparttable}
     %\end{adjustbox}
 \end{table}
 
-\begin{table}[H]
-    \centering
-    \caption{Estimates of Schelling behavior (non-Western households), dropped control}
-    \label{tab:main_results_robust_I_control_non_west_full}
-    %\begin{adjustbox}{width = \linewidth, center}    
-    \begin{threeparttable}
-            \input{tabs/main_results_robust_I_control_non_west_full.tex}
-    \begin{tablenotes}[flushleft]
-    \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the neighborhood level. The table reports the estimate of $\beta_1 - \beta_2$ from equation \ref{eq:main_eq_schelling_behavior}. 
-    \end{tablenotes}
-    \end{threeparttable}
-    %\end{adjustbox}
-\end{table}
 
-\begin{table}[H]
-    \centering
-    \caption{Estimates of Schelling behavior (native households), 100m}
-    \label{tab:main_results_full_100m}
-    %\begin{adjustbox}{width = \linewidth, center}    
-    \begin{threeparttable}
-            \input{tabs/main_results_full_100m}
-    \begin{tablenotes}[flushleft]
-    \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the neighborhood level. The table reports the estimate of $\beta_1 - \beta_2$ from equation \ref{eq:main_eq_schelling_behavior}. 
-    \end{tablenotes}
-    \end{threeparttable}
-    %\end{adjustbox}
-\end{table}
 
 \begin{table}[H]
     \caption{DDU nomenclature and education length in years}
@@ -144,6 +134,32 @@
 \end{threeparttable}
 \end{table}
 
+\subsection{Distance to neighbors}
+It is reasonable to question why I choose to require exactly 25 meters or less for your nearest neighbor in the sample definition in section \ref{sec:estimation_sample_definition}. To elicit discussion, consider the following estimation. I now expand my sample to include households who have their three nearest neighbor wihtin a distance 100 meters. I then include treatments in distance bands of 0-12.5, 12.5-25 and 25-100 meters. Thus, I am estimating:
+
+\begin{equation}
+\begin{split}
+    Y_{i, j, t} &= \alpha_1 \mathbb{I}[e', k=n_{nearest_{0,12.5}}] + \alpha_2 \mathbb{I}[e', k=n_{nearest_{12.5,25}}] + \alpha_3 \mathbb{I}[e', k=n_{nearest_{25, 100}}] \\
+    &+  \alpha_4 \mathbb{I}[e', k = n_{control}] + \gamma Z_{i, j, t} + \omega_{j, t} + \epsilon_{i, j, t}
+\label{eq:main_eq_schelling_behavior_100m}
+\end{split}
+\end{equation}
+
+Where the coefficients of interest are $\alpha_1-\alpha_4$, $\alpha_2-\alpha_4$ and $\alpha_3-\alpha_4$. The "control" group are all other households who get new different-type neighbors from rank 4 to 40 in similar fashion to previous estimates. Table \ref{tab:main_results_full_100m} show the full set of coefficients of this model. Here you can clearly see the response to a new different-type neighbor mostly happens at a very close distance. To be "conservative", I decide to cap the maximum distance to the nearest neighbor at 25 meters to account for potential inaccuracies in the approach for identifying nearest neighbor described in section \ref{sec:}   
+
+\begin{table}[H]
+    \centering
+    \caption{Estimates of Schelling behavior, distance to nearest neighbor $\leq100$m }
+    \label{tab:main_results_full_100m}
+    %\begin{adjustbox}{width = \linewidth, center}    
+    \begin{threeparttable}
+            \input{tabs/main_results_full_100m}
+    \begin{tablenotes}[flushleft]
+    \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the neighborhood level. The table reports the estimate of $\alpha_1 - \alpha_4$ from equation \ref{eq:main_eq_schelling_behavior_100m}. 
+    \end{tablenotes}
+    \end{threeparttable}
+    %\end{adjustbox}
+\end{table}
 
 \section{Additional figures}
 \begin{figure}[H]
@@ -159,13 +175,12 @@
 	\includegraphics[width=\textwidth]{figs/aarhus_howdy_neighbor.pdf}	
 	\caption{Aarhus}
 	\end{subfigure}
-    
     \begin{subfigure}{.65\textwidth}	
 	\centering
 	\includegraphics[width=\textwidth]{figs/cph_howdy_neighbor.pdf}	
 	\caption{Copenhagen}
 	\end{subfigure}	
-\begin{tablenotes}[flushleft]
+\begin{tablenotes}
 \item \footnotesize \textit{Note:} The figure show the variation in receiving a new-non West neighbor for native households at the \textit{neighborhood} scale for three different municipalities. Neighborhoods not in the sample are greyed out. Household types are split up in three types (native/non-West/West), see section \ref{sec:intro_definitions} for more details. Neighborhoods are defined in section \ref{sec:data_geospatial}. 
 \end{tablenotes}
 \label{fig:incidence_new_non_west_neighbors_unconstrained}
@@ -248,9 +263,10 @@ That is, I am considering the $k=24$ nearest neighbors in reference to the toler
 	\end{subfigure}
 \end{figure}
 
-It is clear that the model predicts a segregated scenario for relatively mild preference parameters. Unsurprisingly, for sufficiently low levels of tolerances, one can observe fairly integrated societies. However, this pattern reverses once the tolerance parameter goes up, but not at levels one might expect. Even when agents are willing to accept up to 60 percent diverse neighbours ($1-\tau = 0.4$), we start to observe almost perfectly segregated societies.
+It is clear that the model predicts a segregated scenario for relatively mild preference parameters. Unsurprisingly, for sufficiently low levels of tolerances, one can observe fairly integrated societies. However, this pattern reverses once the tolerance parameter goes up, but not at levels one might expect. 
 
-...
+
+\end{document}
 
 \section{Random shit}
 \label{sec:appendix_figs}
@@ -271,5 +287,3 @@ It is clear that the model predicts a segregated scenario for relatively mild pr
         \footnotesize \textit{Note}: Non-Western households refers to households where at least one household member is of non-Western origin.
     \end{minipage}
 \end{figure}
-
-\end{document}

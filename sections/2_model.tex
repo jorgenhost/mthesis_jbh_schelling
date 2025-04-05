@@ -76,7 +76,7 @@ Finally, from the perspective of incumbent households, new neighbors are quasi-r
 Averaging over $J$ neighborhoods yields a consistent estimate of the average treatment on the treated (ATT) $\overline{Y(e', k_{nearest}) - Y(e', k_{near})}$ conditional on observable characteristics. I empirically formalize this approach below:
 \begin{equation}
 \begin{split}
-    Y_{i, j, t} = &\beta_1 \mathbb{I}[r', k=n_{nearest}] + \beta_2 \mathbb{I}[r', k = n_{near}] + \beta_3 \mathbb{I}[r', k = n_{close}] \\
+    Y_{i, j, t} = &\beta_1 \mathbb{I}[e', k=n_{nearest}] + \beta_2 \mathbb{I}[e', k = n_{near}] + \beta_3 \mathbb{I}[e', k = n_{close}] \\
     & + \gamma Z_{i, j, t} + \omega_{j, t} + \epsilon_{i, j, t}
 \label{eq:main_eq_schelling_behavior}
 \end{split}
@@ -86,7 +86,7 @@ $Y_{i, j, t}$ denotes the outcome of interest, an indicator ($\times100$) for wh
 
 I include household-level $Z_{i,j,t}$ control variables that affects the propensity to move. These include household age, household size, household income and tenure at address (how long you have lived at your current address at a moment in time). 
 
-The parameter(s) of interest is $\beta_1 - \beta_2$, which represents the difference in moving propensity in response to a new different-type neighbor. I choose to segment and add treatments in "bins" of ordinal ranks K. \textcolor{red}{Why? I do this to increase precision... yada, yada.} Specifically, I define $k_{nearest} \in \{1, 2, 3\}$, $k_{near} \in \{4, 5, 6\}$ and $k_{close} \in \{[7-10], [11-20], [21-30], [31-40]\}$.
+The parameter(s) of interest is $\beta_1 - \beta_2$, which represents the difference in moving propensity in response to a new different-type neighbor. I choose to segment and add treatments in "bins" of ordinal ranks K. Specifically, I define $k_{nearest} \in \{1, 2, 3\}$, $k_{near} \in \{4, 5, 6\}$ and $k_{close} \in \{[7-10], [11-20], [21-30], [31-40]\}$. First and foremost, the reason I do this is to add statistical power, but it also allows me to examine whether the effect of receiving a different-type neighbor decays with distance. It also facilitates direct comparison with \textcite{Bayer_2022_nearest_neighbor}. (\textcolor{red}{Remember to compare...})
 
 The inclusion of neighborhood-by-quarter fixed effects $\omega_{j,t}$ is central to my identification strategy. These fixed effects ensure I compare only households within the same neighborhood in the same time period, thereby controlling for all time-varying neighborhood characteristics that might simultaneously affect both the arrival of different-type neighbors and moving decisions.
 

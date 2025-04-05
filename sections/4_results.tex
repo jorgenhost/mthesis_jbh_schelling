@@ -1,76 +1,111 @@
 \documentclass[../main.tex]{subfiles}
 \begin{document}
-\section{Results}
+\section{Main results}
 \label{sec:results}
+
+This section presents estimates of Schelling behavior among native and non-Western households in Denmark. I find evidence that the propensity to move for native households increases with the arrival of new different-type household among their nearest neighbors rather than slightly further away, consistent with the prediction of segregation model by \textcite{schelling1971dynamic}. 
 
 Table \ref{tab:main_results_native} and \ref{tab:main_results_non_west} report estimates $\beta_1-\beta_2$ from equation \ref{eq:main_eq_schelling_behavior} as proxy for Schelling behavior. All columns include neighborhood-by-quarter fixed effects ($\omega_{j,t}$ from equation \ref{eq:main_eq_schelling_behavior}) to facilitate comparable analysis. The first column has no further covariates added. 
 
-For native households, the estimate indicate an increase in moving propensity of 0.9 percentage points if a native households gets a new non-west neighbor among their nearest neighbor than among their $K=[11-20]$-nearest neighbor. As expected from the balance tests, however, this effect dampens if we add control variables for real equivalised income, tenure and the age of oldest household member in succession. The preferred specification in column 4 indicate an incremental moving response of 0.7 percentage points. 
+For native households, the estimate indicate an increase in moving propensity of around 0.3 percentage points if a native households gets a new non-west neighbor among their three nearest neighbors compared to receiving one slightly further away (ranks 4-6). This represents a 1.6 percent relative to the baseline moving rate of 20.23 percent moving rate. Importantly, this effect remains statistically significant and remarkably stable across different specifications. It is worth noting that this includes controlling for real equivalised household income and/or real net wealth. These are two covariates I would expect to influence an incumbent household's propensity to move.  
 
-For non-Western households, estimates of Schelling behavior remain at lower levels than that of their native counterparts. For the same ordinal neighbor rank, the estimate of my preferred specification in column 4 indicate Schelling behavior that are about half as intense for non-Western households as it is for native households. 
+In contrast, Table \ref{tab:main_results_non_west} reveals that non-Western households show a substantially smaller response: 0.06-0.1 percentage points or around 0.5 percent relative to the baseline exit rate. This effect is not statistically significant for any specification and suggests that they are unaffected by the identity of a new different-type neighbor.
 
-If we compare these estimates to the mean of the dependent variable across the different types of household, these translate to an increase in moving propensity of $\frac{0.7}{20} = 3.5$ pct. for native households and $\frac{0.36}{20}=1.8$ pct. for non-Western households within 2 years. 
+Table \ref{tab:main_results_full} and \ref{tab:main_results_full_non_west} show the full set of coefficients estimated. For both household types, these reveal that the effect of receiving a different-type neighbor decays with distance with increasingly negative coefficients at greater neighbor ranks. This spatial pattern aligns well with Schelling's model of segregation and the framework described in section \ref{sec:model}, where interactions with immediate neighbors carry greater weight than those further away.
 
 \begin{table}[H]
     \caption{Estimates of Schelling behavior (native households)}
     \label{tab:main_results_native}
+    \begin{adjustbox}{width = \linewidth, center}
+        
     \begin{threeparttable}
             \input{tabs/main_results.tex}
     \begin{tablenotes}[flushleft]
     \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the neighborhood level. The table reports the estimate of $\beta_1 - \beta_2$ from equation \ref{eq:main_eq_schelling_behavior}. Control variables include dummies for 4 income bins (denoted "Income"), 4 tenure bins (denoted "Tenure") and 3 age bins (denoted "Age") for the oldest household member. Table \ref{tab:main_results_full} contains the complete set of coefficients.
     \end{tablenotes}
     \end{threeparttable}
+    \end{adjustbox}
 \end{table}
 
 \begin{table}[H]
     \caption{Estimates of Schelling behavior (non-Western households)}
     \label{tab:main_results_non_west}
+    \begin{adjustbox}{width = \linewidth, center}
+    
     \begin{threeparttable}
             \input{tabs/main_results_non_west}
     \begin{tablenotes}[flushleft]
     \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the neighborhood level. The table reports the estimate of $\beta_1 - \beta_2$ from equation \ref{eq:main_eq_schelling_behavior}. Control variables include dummies for 4 income bins (denoted "Income"), 4 tenure bins (denoted "Tenure") and 3 age bins (denoted "Age") for the oldest household member. Table \ref{tab:main_results_full_non_west} contains the complete set of coefficients.
     \end{tablenotes}
     \end{threeparttable}
+    \end{adjustbox}    
 \end{table}
 
 \subsection{Heterogeneity}
-\textcolor{red}{just for the fun of it... include balance tesst for SES estimations}
+Table \ref{tab:main_results_full} and \ref{tab:main_results_full_non_west} also indicate noteworthy heterogeneity, particularly along the income and wealth dimension. (\textcolor{red}{sprinkle a theoretical citation here}) This motivates me to elicit insight into the differences in response by socioeconomic status (SES). I define SES as either "\textit{low}" or "\textit{high}": 
+
+\begin{enumerate}
+    \item Low: Households earn less than 200,000 DKK in real equivalised terms and was outside the labor marker \textit{or} the best educated individual had less than or equal to 11 years of schooling.
+    \item High: Household earn at least 600,000 DKK in real equivalised terms and at least one member had full time work \textit{or} the best educated individual had more than or equal to 18 years of schooling (corresponding to a completed long-cycle/MSc education.
+\end{enumerate}
+
+The heterogeneity in response by SES is presented in table \ref{tab:main_results_ses} and \ref{tab:main_results_ses_non_west} for native and non-Western households, respectively. The first two columns in both tables denotes instances where the incumbent households fall within either of these categories. The next 4 columns "pairs" incumbent household by SES with incoming different-type neighbors that also fall within the categories above. 
+
+What is immediately clear from these tables is that the Schelling response is primarily driven by low-SES native households "paired" with low-SES non-Western household, who show an increase in moving propensity by around 0.56 percentage points when they receive a new non-Western neighbor or around 2.8 percent increase from their baseline exit rate. This effect is nearly twice the magnitude observed in the full sample. Furthermore, the remaining columns in table \ref{tab:main_results_ses} also exhibit a fascinating pattern. It is incredibly rare for low-SES native households to receive high-SES non-Western and for low-SES non-Western households to receive high-SES native households, which corroborates the idea of the power of residential sorting that happens at the neighborhood level. 
+
+I make a final robustness check in table \ref{tab:main_results_robust_I_control}. I follow \textcite{Bayer_2022_nearest_neighbor} and define an alternative specification  that combines all control distances into a single category, implying that I am estimating the following:
+
+\begin{equation}
+\begin{split}
+    Y_{i, j, t} = \gamma_1 \mathbb{I}[e', k=n_{nearest}] + \gamma_2 \mathbb{I}[e', k = n_{control}] + \gamma Z_{i, j, t} + \omega_{j, t} + \epsilon_{i, j, t}
+\label{eq:main_eq_schelling_behavior_I_control}
+\end{split}
+\end{equation}
+
+Where the coefficient of interest is $\gamma_1-\gamma_2$, the difference in moving propensity following a new different-type households among their three nearest neighbor compared to rank 4 to 40. While this specification increases statistical power, as table \ref{tab:main_results_robust_I_control} shows, my preferred specification distinguishes between neighbor ranks to better capture the spatial decay of effects that better aligns with the theory of \textcite{schelling1971dynamic}.
+
+%\subsection{Heterogeneity}
+%\textcolor{red}{Super interesting dynamics wrt SES. Low-SES native households seem to drive most of response with very limited response from non-Western households. just for the fun of it... include balance tesst for SES estimations? The "dropped" control tables merges "control" households into one, instead of segmenting treatment in distance bins.}
 \begin{landscape}
-\begin{table}
+\begin{table}[H]
     \centering
     \caption{Estimates of Schelling behavior (native households) by SES}
     \label{tab:main_results_ses}
+    \begin{adjustbox}{width = 0.65\linewidth, center}    
     \begin{threeparttable}
             \input{tabs/main_results_ses.tex}
     \begin{tablenotes}[flushleft]
-    \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the neighborhood level. The table reports the estimate of $\beta_1 - \beta_2$ from equation \ref{eq:main_eq_schelling_behavior}. Table \ref{tab:main_results_non_west_ses_full} contains the complete set of coefficients.
+    \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the neighborhood level. The table reports the estimate of $\beta_1 - \beta_2$ from equation \ref{eq:main_eq_schelling_behavior}. Table \ref{tab:main_results_ses_full} contains the complete set of coefficients.
     \end{tablenotes}
     \end{threeparttable}
+    \end{adjustbox}
 \end{table}
+\begin{table}[H]
+    \centering
+    \caption{Estimates of Schelling behavior (non-Western households) by SES}
+    \label{tab:main_results_ses_non_west}
+    \begin{adjustbox}{width = 0.65\linewidth, center}    
+    \begin{threeparttable}
+            \input{tabs/main_results_ses_non_west}
+    \begin{tablenotes}[flushleft]
+    \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the neighborhood level. The table reports the estimate of $\beta_1 - \beta_2$ from equation \ref{eq:main_eq_schelling_behavior}. Table \ref{tab:main_results_ses_non_west_full} contains the complete set of coefficients.
+    \end{tablenotes}
+    \end{threeparttable}
+    \end{adjustbox}
+\end{table}
+
 \end{landscape}
 
 \begin{table}[H]
     \centering
-    \caption{Estimates of Schelling behavior (native households), dropped control}
-    \label{tab:main_results_non_west_I_control}
+    \caption{Estimates of Schelling behavior, combined control}
+    \label{tab:main_results_robust_I_control}
     \begin{threeparttable}
             \input{tabs/main_results_robust_I_control.tex}
     \begin{tablenotes}[flushleft]
-    \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the neighborhood level. The table reports the estimate of $\beta_1 - \beta_2$ from equation \ref{eq:main_eq_schelling_behavior}. Table \ref{tab:main_results_robust_I_control_full} contains the complete set of coefficients. 
+    \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the neighborhood level. The table reports the estimate of $\gamma_1 - \gamma_2$ from equation \ref{eq:main_eq_schelling_behavior_I_control}. Table \ref{tab:main_results_robust_I_control_full} contains the complete set of coefficients. 
     \end{tablenotes}
     \end{threeparttable}
 \end{table}
 
-
-\begin{table}[H]
-    \centering
-    \caption{Estimates of Schelling behavior (non-Western households), dropped control}
-    \label{tab:main_results_non_west_I_control_non_west}
-    \begin{threeparttable}
-            \input{tabs/main_results_robust_I_control_non_west}
-    \begin{tablenotes}[flushleft]
-    \item \scriptsize * p < 0.05, ** p < 0.01, *** p < 0.001. Standard errors (in parenthesis) are clustered at the neighborhood level. The table reports the estimate of $\beta_1 - \beta_2$ from equation \ref{eq:main_eq_schelling_behavior}. Table \ref{tab:main_results_robust_I_control_non_west_full} contains the complete set of coefficients. 
-    \end{tablenotes}
-    \end{threeparttable}
-\end{table}
 \end{document}
