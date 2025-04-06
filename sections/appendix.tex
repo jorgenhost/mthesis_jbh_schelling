@@ -145,7 +145,7 @@ It is reasonable to question why I choose to require exactly 25 meters or less f
 \end{split}
 \end{equation}
 
-Where the coefficients of interest are $\alpha_1-\alpha_4$, $\alpha_2-\alpha_4$ and $\alpha_3-\alpha_4$. The "control" group are all other households who get new different-type neighbors from rank 4 to 40 in similar fashion to previous estimates. Table \ref{tab:main_results_full_100m} show the full set of coefficients of this model. Here you can clearly see the response to a new different-type neighbor mostly happens at a very close distance. To be "conservative", I decide to cap the maximum distance to the nearest neighbor at 25 meters to account for potential inaccuracies in the approach for identifying nearest neighbor described in section \ref{sec:}   
+Where the coefficients of interest are $\alpha_1-\alpha_4$, $\alpha_2-\alpha_4$ and $\alpha_3-\alpha_4$. The "control" group are all other households who get new different-type neighbors from rank 4 to 40 in similar fashion to previous estimates. Table \ref{tab:main_results_full_100m} show the full set of coefficients of this model. Here you can clearly see the response to a new different-type neighbor mostly happens at a very close distance. To be "conservative", I decide to cap the maximum distance to the nearest neighbor at 25 meters to account for potential inaccuracies in the approach for identifying nearest neighbor described in section \ref{sec:data_geospatial}.   
 
 \begin{table}[H]
     \centering
@@ -164,7 +164,7 @@ Where the coefficients of interest are $\alpha_1-\alpha_4$, $\alpha_2-\alpha_4$ 
 \section{Additional figures}
 \begin{figure}[H]
 \centering
-\caption{Incidence of new different-type neighbors at the neighborhood level} \label{fig:incidence_different_type_neighborhood_unconstrained}
+\caption{Incidence of new different-type neighbors at the neighborhood level} \label{fig:incidence_new_non_west_neighbors_appendix}
 	\begin{subfigure}{.5\textwidth}	
 	\centering
 	\includegraphics[width=\textwidth]{figs/ishoj_howdy_neighbor.pdf}	
@@ -186,6 +186,7 @@ Where the coefficients of interest are $\alpha_1-\alpha_4$, $\alpha_2-\alpha_4$ 
 \label{fig:incidence_new_non_west_neighbors_unconstrained}
 \end{figure}
 
+\newpage
 \section{The Schelling Model}
 
 \label{sec:appendix_schelling_model_simulation}
@@ -215,7 +216,6 @@ Below is a parameterization of the model described above such that red is always
 
 From here, we can perform element-wise multiplication and summation for each agent in $M$ to determine whether or not this satisfies the condition $s_i \leq \tau$. This process is called convolution and the operation can be done via the following kernel $\mathbf{K}$:
 
-\newpage
 \begin{lstlisting}[style=pythonstyle]
 import numpy as np
 KERNEL = np.array([[1,1,1,1,1],
@@ -243,17 +243,17 @@ That is, I am considering the $k=24$ nearest neighbors in reference to the toler
 \caption{Schelling model simulations by $\tau$ required same-type neighbors}
 	\begin{subfigure}{0.45\textwidth}	
 	\centering
-    \caption{Integrated society, $\tau = 6$}
+    \caption{"Assimilated" society, $\tau = 6$}
 	\includegraphics[width=\textwidth]{figs/schelling_6.pdf}	
 	\end{subfigure}	
 	\begin{subfigure}{0.45\textwidth}	
 	\centering
-    \caption{Inbetween society, $\tau = 8$}
+    \caption{"Integrated/segregated" society, $\tau = 8$}
 	\includegraphics[width=\textwidth]{figs/schelling_8.pdf}	
 	\end{subfigure}	
 	\begin{subfigure}{0.45\textwidth}	
 	\centering
-     \caption{Segregated society, $\tau = 10$}
+     \caption{"Segregated" society, $\tau = 10$}
 	\includegraphics[width=\textwidth]{figs/schelling_10.pdf}	
 	\end{subfigure}
     \begin{subfigure}{0.45\textwidth}	
@@ -263,7 +263,7 @@ That is, I am considering the $k=24$ nearest neighbors in reference to the toler
 	\end{subfigure}
 \end{figure}
 
-It is clear that the model predicts a segregated scenario for relatively mild preference parameters. Unsurprisingly, for sufficiently low levels of tolerances, one can observe fairly integrated societies. However, this pattern reverses once the tolerance parameter goes up, but not at levels one might expect. 
+Unsurprisingly, for sufficiently low levels of tolerances, one can observe fairly integrated societies. However, this pattern reverses once the tolerance parameter goes up, but not at levels one might expect. 
 
 
 \end{document}
