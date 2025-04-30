@@ -5,7 +5,7 @@ Does the ethnicity of your nearest neighbor affect your propensity to move? To p
 ![Image not found](howdy_neighbor.png)
 
 ## Project structure
-This is my master's thesis on Schelling behavior. To facilitate reproducibility, I have included all codes used in the paper. These are found in the `src` folder. Utility functions are found in the src/dst folder. 
+This is my master's thesis on Schelling behavior. Codes used in the paper are found in the /src folder. Utility functions are found in the src/dst folder. 
 
 - `0_main.sh`: A `bash` script that executes all scripts in succession. 
 - `1_data_parse.py`: Fetches administrative data sets and saves these as parquet datasets for speedy computation. 
