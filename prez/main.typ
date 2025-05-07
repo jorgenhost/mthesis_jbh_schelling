@@ -17,13 +17,18 @@
 
 // Custom outline
 #slide(title: "Overview")[
-  #set text(size: 22pt)
+  #set text(size: 18pt)
   - *Motivation*: Residential segregation in Denmark and Schelling's model
   - *Research Question*: Does the ethnicity of your nearest neighbor affect propensity to move?
   - *Methods*: Nearest-neighbor research design with comprehensive administrative data
   - *Results*: Asymmetry in residential responses based on ethnicity
   - *Heterogeneity Analysis*: SES differences in Schelling behavior
   - *Conclusion*: Evidence of individually motivated segregation
+
+  _Defintions_:
+  + Native households: All members are of Danish origin
+  + Non-Western households: At least 1 member is of non-Western origin
+  + Western households: At least 1 member is of Western origin (but no non-Western household members)
 ]
 
 // Introduction and motivation
@@ -36,17 +41,17 @@
   - What should go in appendix and what should be in prez?
   - Exclude data sources(?)
   - Spend time on spatial patterns. This
+  -
 ]
 
-#slide(title: "Residential Segregation in Denmark")[
+#slide(title: "Demographic context")[
   #set text(size: 22pt)
   #cols(columns: (1fr, 1fr), float: true)[
     - Denmark has transformed from a relatively homogeneous society to increasing ethnic diversity
-    - Non-Western households grew from ~2% in 1985 to ~10% by 2020
+    - Non-Western households grew from \~2% in 1985 to \~10% by 2020
     - Limited empirical evidence on how ethnic background directly influences residential sorting
   ][
-    // #image("https://source.unsplash.com/random/800x500/?denmark+housing", width: 100%)
-    #text(size: 10pt)[Placeholder image - replace with actual data visualization of segregation patterns]
+    #image("fig1_hh_dist.png", width: 100%)
   ]
 ]
 
@@ -57,7 +62,7 @@
   - Three types of segregation:
     1. Organized segregation (e.g., historical Jim Crow laws)
     2. Economically induced segregation (clustering by income/education)
-    3. #reddy[Individually motivated segregation] ← #strong[Focus of this paper]
+    3. #reddy[Individually motivated segregation] #sym.arrow.l #strong[Focus of this paper]
 
   - Schelling's key insight: Small individual preferences can lead to macro-level segregation
 ]
@@ -114,21 +119,21 @@
   This design addresses key identification challenges by comparing households experiencing same neighborhood conditions but different micro-geography of new neighbors.
 ]
 
-#slide(title: "Data Sources")[
-  #set text(size: 22pt)
-  #strong[Comprehensive Danish administrative data, 1985-2020:]
+// #slide(title: "Data Sources")[
+//   #set text(size: 22pt)
+//   #strong[Comprehensive Danish administrative data, 1985-2020:]
 
-  - Population register (BEF): Demographics, family structure, country of origin
-  - Income register (IND): Gross income, net wealth
-  - Labor market register (RAS): Employment status
-  - Education register (UDDF): Educational attainment
+//   - Population register (BEF): Demographics, family structure, country of origin
+//   - Income register (IND): Gross income, net wealth
+//   - Labor market register (RAS): Employment status
+//   - Education register (UDDF): Educational attainment
 
-  #v(1em)
-  #strong[Unique geospatial data (BOPAEL_KOORD):]
-  - Precise coordinates with start/end dates at each address
-  - 4-dimensional: $(x_E, y_N, z_F, z_D)$ (East, North, Floor, Door)
-  - Enables construction of exact nearest neighbors for each household
-]
+//   #v(1em)
+//   #strong[Unique geospatial data (BOPAEL_KOORD):]
+//   - Precise coordinates with start/end dates at each address
+//   - 4-dimensional: $(x_E, y_N, z_F, z_D)$ (East, North, Floor, Door)
+//   - Enables construction of exact nearest neighbors for each household
+// ]
 
 // #slide(title: "Household Definitions and Sample Restrictions")[
 //   #set text(size: 18pt)
@@ -136,7 +141,7 @@
 //     #strong[Household definition:]
 //     - Graph theory approach using spatio-temporal overlap
 //     - Maximizing edge weights to identify "stable" households
-//     - ~14 million historical household sequences
+//     - \~14 million historical household sequences
 
 //     #strong[Sample restrictions:]
 //     - Income: 200,000-1,000,000 DKK (equivalized)
@@ -155,11 +160,9 @@
 //     3. Western: At least one non-native of Western origin, no non-Western members
 //   ]]
 
-// Results
-#title-slide[
-  Results
-]
+#title-slide[Data
 
+]
 #slide(title: "Spatial Patterns of New Different-Type Neighbors")[
   #set text(size: 18pt)
   #cols(columns: (1fr, 1fr))[
@@ -167,63 +170,85 @@
 
     - Clear east-west and urban-rural divide
     - Concentration in Copenhagen and surroundings
-    - Highest incidence in Ishøj (~9 new different-type neighbors)
-    - Copenhagen (~6), Aarhus and Odense (~4)
+    - Highest incidence in Ishøj (\~9 new different-type neighbors)
+    - Copenhagen (\~6), Aarhus and Odense (\~4)
+  ][
+    #image("fig3_incidence_new_nonWest.png", width: 100%)
+  ]
+]
 
+#slide(title: "Spatial Patterns of New Different-Type Neighbors")[
+  #set text(size: 18pt)
+  #cols(columns: (1fr, 1fr))[
     #strong[Within-city variation:]
     - Some Copenhagen neighborhoods: 30+ new non-Western neighbors
-    - Other Copenhagen neighborhoods: < 2 new non-Western neighbors
+    - Other Copenhagen neighborhoods: \<2 new non-Western neighbors
   ][
-    //#image("https://source.unsplash.com/random/800x500/?map+denmark", width: 100%)
-    #text(size: 10pt)[Placeholder - replace with actual visualization from Figure 3]
+    #image("fig4_incidence_new_nonWest_citylevel.png", width: 85%)
 
-    #v(1em)
-    //#image("https://source.unsplash.com/random/800x500/?urban+map", width: 100%)
-    #text(size: 10pt)[Placeholder - replace with actual visualization from Figure 4]
   ]
 ]
 
 #slide(title: "Summary Statistics")[
-  #set text(size: 18pt)
-  #strong[Key observations from summary statistics:]
+  #set text(size: 16pt)
+  #strong[3 key observations from summary statistics:]
+  #cols(columns: (1fr, 2fr))[
+    + Treated households show higher mobility: 23-24% vs. 19-20% for "control" households
+    + Treated native households have lower wealth (48,500 DKK vs. 81,000 DKK) and income
+    // - Treated non-Western households have slightly lower wealth than controls
+    + Non-Western households are better educated on average (by \~2 years)
+    // - Native households tend to live in less dense, more affluent, less integrated neighborhoods
+    // - Treated native households live in neighborhoods with \~15% non-Western share vs. 8% for all native households
 
-  - "Treated" households show higher mobility: 23-24% vs. 19-20% for "control" households
-  - Treated native households have lower wealth (48,500 DKK vs. 81,000 DKK) and income
-  - Treated non-Western households have slightly lower wealth than controls
-  - Non-Western households are better educated on average (by ~2 years)
-  - Native households tend to live in less dense, more affluent, less integrated neighborhoods
-  - Treated native households live in neighborhoods with ~15% non-Western share vs. 8% for all native households
+    // #v(0.5em)
+    // #align(center)[
+    //   These patterns highlight selection effects and the importance of the nearest-neighbor research design.
+    // ]
 
-  #v(0.5em)
-  #align(center)[
-    These patterns highlight selection effects and the importance of the nearest-neighbor research design.
+  ][
+    #image("tab1_summary_stat.png", width: 100%)
   ]
 ]
 
-#slide(title: "Main Results: Asymmetric Schelling Behavior")[
-  #set text(size: 18pt)
-  #cols(columns: (1fr, 1fr), align: center)[
-    = Native households
+#slide(title: "Residential sorting over time")[
+  // #set align(center)
+  #set text(size: 16pt)
+  #cols(columns: (1fr, 2fr))[
+    - Given demographic context, how has residential sorting developed over time?
+    - *Natives*:
+      - 1990 [K=100 nearest]: 40 percent had between 80-100 same-type neighbors.
+      - 2020 [K=100 nearest]: 60 percent had between 80-100 same-type neighbors.
+    - _Quick and dirty_ counterfactual simulation with fixed 1990-distribution show little-to-no change in sorting patterns.
+    - *Schelling behavior?*
   ][
-    = Non-Western households
+    #image("fig5_residential_sorting_k_nearest_over_time.png")
   ]
-  #cols(columns: (0.5fr, 0.5fr), gutter: 2em)[
-    - Increase moving propensity by ~0.3 percentage points when receiving a new non-Western neighbor
+]
+
+// Results
+#title-slide[
+  Results
+]
+
+#slide(title: "Main results: Assymetric Schelling behavior")[
+  #set text(size: 16pt)
+  #cols(columns: (1fr, 1fr))[
+    #image("tab4_main_results_native.png", width: 100%)
+    - Increase moving propensity by \~0.3 percentage points when receiving a new non-Western neighbor
     - 1.6% increase relative to baseline exit rate
     - Effect stable across specifications
     - Robust to controls for income, wealth, age, tenure
   ][
+    #image("tab5_main_results_nonWest.png", width: 100%)
     - Show substantially smaller response: 0.06-0.1 percentage points
-    - ~0.5% relative to baseline exit rate
+    - \~0.5% relative to baseline exit rate
     - Not statistically significant
     - Suggests they are unaffected by identity of new native neighbors
   ]
 
-  #v(0.5em)
-  #align(center)[
-    #reddy[Key finding:] Asymmetric Schelling behavior in the Danish context
-  ]
 ]
+
+
 
 #slide(title: "Heterogeneity by Socioeconomic Status")[
   #set text(size: 18pt)
@@ -236,7 +261,7 @@
   #strong[Key findings:]
 
   - Schelling behavior primarily driven by low-SES native households responding to low-SES non-Western households
-  - Effect size: ~0.56 percentage points or ~2.8% increase from baseline exit rate
+  - Effect size: \~0.56 percentage points or \~2.8% increase from baseline exit rate
   - Nearly twice the magnitude observed in full sample
   - Very rare for low-SES native households to receive high-SES non-Western neighbors and vice versa
   - Confirms powerful residential sorting at neighborhood level
@@ -248,14 +273,14 @@
 
   #align(center)[
     #table(
-      columns: (auto, auto, auto),
+      columns: (auto, auto),
       inset: 10pt,
       align: center,
-      [*Context*], [*Response*], [*Magnitude*],
-      [Denmark (Native)], [Asymmetric], [1.6% above baseline],
-      [Denmark (Non-Western)], [Insignificant], [0.5% above baseline],
-      [U.S. (White)], [Symmetric], [4% above baseline],
-      [U.S. (Black)], [Symmetric], [6% above baseline],
+      [*Context*], [*Magnitude*],
+      [Denmark (Native)], [1.6% above baseline],
+      [Denmark (Non-Western)], [0.5% above baseline],
+      [U.S. (White)], [4% above baseline],
+      [U.S. (Black)], [6% above baseline],
     )
   ]
 
@@ -263,7 +288,7 @@
   #strong[Possible explanations for differences:]
   - Institutional variation in housing market and integration policies
   - Different neighborhood contexts (urban/dense vs. suburban)
-  - Historical path dependence in residential patterns
+  - Stronger "type 1 & 2" (institutional & economical) segregation?
 ]
 
 // Conclusion
@@ -316,31 +341,15 @@
   Appendix
 ]
 
-#slide(title: "Spatial Patterns in Detail")[
-  #set text(size: 18pt)
-  #strong[Municipal-level patterns of new different-type neighbors (1985-2020)]
-
-  //#image("https://source.unsplash.com/random/800x500/?denmark+map", width: 80%)
-  #text(size: 10pt)[Placeholder - replace with Figure 3 from thesis]
-
-  #v(0.5em)
-  - Dark blue/purple represents "low" intensity of new different-type neighbors
-  - Orange/yellow represents "high" intensity
-  - East-west divide clearly visible
-]
-
-#slide(title: "Same-Type Neighbor Trends over Time")[
-  #set text(size: 18pt)
-  #strong[Evolution of residential sorting (1990-2020)]
-
-  //#image("https://source.unsplash.com/random/800x500/?graph+trend", width: 80%)
-  #text(size: 10pt)[Placeholder - replace with Figure 5 from thesis]
-
-  #v(0.5em)
-  - Native households: Increasing proportion with exclusively native nearest neighbors
-  - By 2020, ~60% of native households had 80-100% same-type neighbors (vs. ~40% in 1990)
-  - Non-Western households: Opposite trend suggesting integration, not segregation
-  - Counterfactual simulation shows increased segregation beyond what would be expected from demographic changes alone
+#slide(title: "Balance tests")[
+  #set text(size: 14pt)
+  #align(center)[
+    $
+      X_(i,j,t) = phi_1 I[e', k = n_(n e a r e s t)] + phi_2 I[e', k = n_(n e a r)] + phi_3 I[e', k = n_(c l o s e)] + omega_(j,t) + epsilon_(i,j,t)
+    $
+    #image("tab2_balance_test_native.png", width: 80%)
+    #image("tab3_balance_test_nonWest.png", width: 80%)
+  ]
 ]
 
 #slide(title: "Robustness Checks")[
@@ -366,14 +375,9 @@
     - Agents of two types randomly allocated on grid
     - Agents move if share of different-type neighbors exceeds tolerance threshold
     - Even with modest tolerance thresholds, segregation emerges
-  ][
-    //#image("https://source.unsplash.com/random/800x500/?simulation+grid", width: 100%)
-    #text(size: 10pt)[Placeholder - replace with Figure C.1 from thesis appendix]
-  ]
-
-  #v(0.5em)
-  #align(center)[
-    This visualization demonstrates how small individual preferences
+    - This visualization demonstrates how small individual preferences
     can lead to significant macro-level segregation patterns
+  ][
+    #image("fig_c.1_schelling_model_simulation.png", width: 100%)
   ]
 ]
