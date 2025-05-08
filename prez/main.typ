@@ -18,12 +18,12 @@
 // Custom outline
 #slide(title: "Overview")[
   #set text(size: 18pt)
-  - *Motivation*: Residential segregation in Denmark and Schelling's model
+  - *Motivation*: Demographic transition and Schelling's model
   - *Research Question*: Does the ethnicity of your nearest neighbor affect propensity to move?
   - *Methods*: Nearest-neighbor research design with comprehensive administrative data
-  - *Results*: Asymmetry in residential responses based on ethnicity
-  - *Heterogeneity Analysis*: SES differences in Schelling behavior
-  - *Conclusion*: Evidence of individually motivated segregation
+  - *Results*: Schelling behavior?
+  - *Heterogeneity Analysis*: SES
+  - *Conclusion*
 
   _Defintions_:
   + Native households: All members are of Danish origin
@@ -44,6 +44,22 @@
   - Extensions: Where do they move to? If they move to a similar neighborhood, the idea of Schelling behavior is "violated"
 ]
 
+#slide(title: "Theoretical Background: Schelling's Model")[
+  #set text(size: 18pt)
+  #cols(columns: (1fr, 1fr))[
+  - @schelling1971dynamic proposed that neighborhoods may "tip" when minority share reaches a threshold
+  - Even with relatively tolerant preferences toward diversity
+  - Three types of segregation:
+    1. Organized segregation (e.g., historical Jim Crow laws)
+    2. Economically induced segregation (clustering by income/education)
+    3. #reddy[Individually motivated segregation] #sym.arrow.l #strong[Focus of this paper]
+    Schelling's key insight: Small individual preferences can lead to macro-level segregation
+  ][
+    #image(("fig_c.1_schelling_model_simulation.png"))
+  ]
+]
+
+
 #slide(title: "Demographic context")[
   #set text(size: 22pt)
   #cols(columns: (1fr, 1fr), float: true)[
@@ -54,19 +70,6 @@
     #image("fig1_hh_dist.png", width: 100%)
   ]
 ]
-
-#slide(title: "Theoretical Background: Schelling's Model")[
-  #set text(size: 22pt)
-  - #strong[@schelling1971dynamic] proposed that neighborhoods may "tip" when minority share reaches a threshold
-  - Even with relatively tolerant preferences toward diversity
-  - Three types of segregation:
-    1. Organized segregation (e.g., historical Jim Crow laws)
-    2. Economically induced segregation (clustering by income/education)
-    3. #reddy[Individually motivated segregation] #sym.arrow.l #strong[Focus of this paper]
-
-  - Schelling's key insight: Small individual preferences can lead to macro-level segregation
-]
-
 // Methods
 #title-slide[
   Methods
