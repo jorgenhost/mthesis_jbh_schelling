@@ -41,7 +41,7 @@
   - What should go in appendix and what should be in prez?
   - Exclude data sources(?)
   - Spend time on spatial patterns. This
-  -
+  - Extensions: Where do they move to? If they move to a similar neighborhood, the idea of Schelling behavior is "violated"
 ]
 
 #slide(title: "Demographic context")[
@@ -90,7 +90,7 @@
 #slide(title: "Identification Challenge")[
   #set text(size: 22pt)
   $
-    V_(i,j,t) = f(Z_(i,t), X_(j,t), xi_(j,t), alpha) + sum_(k) g(Z_(i,t), Z_(k,t), D_(i,k), beta) + delta E[V_(i,j,t+1)] + epsilon_(i,j,t)
+    V_(i,j,t) = f(Z_(i,t), X_(j,t), xi_(j,t)) + sum_(k) g(Z_(i,t), Z_(k,t), D_(i,k)) + delta E[V_(i,j,t+1)] + epsilon_(i,j,t)
   $
 
 
@@ -259,12 +259,13 @@
 
   #v(0.5em)
   #strong[Key findings:]
-
-  - Schelling behavior primarily driven by low-SES native households responding to low-SES non-Western households
-  - Effect size: \~0.56 percentage points or \~2.8% increase from baseline exit rate
-  - Nearly twice the magnitude observed in full sample
+  #cols(columns: (1fr, 1fr))[
+    #image("tab6_ses_native.png", width: 100%)
+  ][
+    #image("tab7_ses_nonWest.png", width: 100%)
+  ]
+  - Schelling behavior primarily driven by low-SES native households responding to low-SES non-Western household: \~0.56 percentage points or \~2.8% increase from baseline exit rate
   - Very rare for low-SES native households to receive high-SES non-Western neighbors and vice versa
-  - Confirms powerful residential sorting at neighborhood level
 ]
 
 #slide(title: "Comparison with U.S. Context")[
@@ -304,26 +305,33 @@
 
   3. Heterogeneity by SES: Low-SES native households responding to low-SES non-Western neighbors show strongest effects (2.8%)
 
-  4. Spatial decay of effects: Moving response decreases monotonically with distance to new different-type neighbors
 
   5. Magnitude in Denmark (1.6%) more modest than in U.S. context (4-6%)
 ]
 
-#slide(title: "Implications and Contributions")[
-  #set text(size: 22pt)
-  #strong[Contributions to segregation research:]
-
-  - Causal evidence of individually motivated segregation as theorized by Schelling (1971)
-  - Demonstration of asymmetric responses in the European welfare state context
-  - Socioeconomic gradient in responses highlighting intersection of ethnicity and economic resources
-  - Evidence that Schelling mechanisms operate across different settings, but with context-specific magnitude and symmetry
-
-  #v(1em)
-  #strong[Policy implications:]
-  - Integration efforts may need to account for micro-geography of neighborhood mixing
-  - Targeted interventions may be more effective for low-SES populations
-  - Understanding asymmetric responses could inform more effective housing policies
+#slide(title: "Extensions")[
+  - Do native households respond to new Western neighbors?
+  - How much are native households willing to pay in premium to live in a more homogenous neighborhood?
+    - Variation?
+  - Those who show Schelling behavior, where do they move to?
+  // - How is this behavior reflected in house prices?
 ]
+
+// #slide(title: "Implications and Contributions")[
+//   #set text(size: 22pt)
+//   #strong[Contributions to segregation research:]
+
+//   - Causal evidence of individually motivated segregation as theorized by Schelling (1971)
+//   - Demonstration of asymmetric responses in the European welfare state context
+//   - Socioeconomic gradient in responses highlighting intersection of ethnicity and economic resources
+//   - Evidence that Schelling mechanisms operate across different settings, but with context-specific magnitude and symmetry
+
+//   #v(1em)
+//   #strong[Policy implications:]
+//   - Integration efforts may need to account for micro-geography of neighborhood mixing
+//   - Targeted interventions may be more effective for low-SES populations
+//   - Understanding asymmetric responses could inform more effective housing policies
+// ]
 
 #focus-slide[
   Thank you for your attention!
