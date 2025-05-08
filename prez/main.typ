@@ -36,13 +36,14 @@
   Introduction
 ]
 
-#slide(title: "To do")[
+/* #slide(title: "To do")[
   #set text(size: 22pt)
   - What should go in appendix and what should be in prez?
   - Exclude data sources(?)
   - Spend time on spatial patterns. This
   - Extensions: Where do they move to? If they move to a similar neighborhood, the idea of Schelling behavior is "violated"
 ]
+*/
 
 #slide(title: "Theoretical Background: Schelling's Model")[
   #set text(size: 18pt)
@@ -91,10 +92,17 @@
 // ]
 
 #slide(title: "Identification Challenge")[
-  #set text(size: 22pt)
+  #set text(size: 18pt)
   $
     V_(i,j,t) = f(Z_(i,t), X_(j,t), xi_(j,t)) + sum_(k) g(Z_(i,t), Z_(k,t), D_(i,k)) + delta E[V_(i,j,t+1)] + epsilon_(i,j,t)
   $
+  Where:
+  - $f(·)$: Utility from neighborhood amenities
+  - $g(·)$: Utility from characteristics of each neighbor $k$ at distance $D_(i,k)$
+  - $Z_i$: Observable household attributes
+  - $X_j$: Observable neighborhood attributes
+  - $xi_j$: Unobservable neighborhood attributes
+  - $epsilon_(i,j,t)$: Idiosyncratic preferences
 
   #strong[Key identification challenges:]
   - Unobserved neighborhood amenities
