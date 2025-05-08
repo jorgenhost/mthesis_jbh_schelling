@@ -47,15 +47,15 @@
 #slide(title: "Theoretical Background: Schelling's Model")[
   #set text(size: 18pt)
   #cols(columns: (1fr, 1fr))[
-  - @schelling1971dynamic proposed that neighborhoods may "tip" when minority share reaches a threshold
-  - Even with relatively tolerant preferences toward diversity
-  - Three types of segregation:
-    1. Organized segregation (e.g., historical Jim Crow laws)
-    2. Economically induced segregation (clustering by income/education)
-    3. #reddy[Individually motivated segregation] #sym.arrow.l #strong[Focus of this paper]
-    Schelling's key insight: Small individual preferences can lead to macro-level segregation
+    - @schelling1971dynamic proposed that neighborhoods may "tip" when minority share reaches a threshold
+    - Even with relatively tolerant preferences toward diversity
+    - Three types of segregation:
+      1. Organized segregation (e.g., historical Jim Crow laws)
+      2. Economically induced segregation (clustering by income/education)
+      3. #reddy[Individually motivated segregation] #sym.arrow.l #strong[Focus of this paper]
+      Schelling's key insight: Small individual preferences can lead to macro-level segregation
   ][
-    #image(("fig_c.1_schelling_model_simulation.png"))
+    #image("fig_c.1_schelling_model_simulation.png")
   ]
 ]
 
@@ -75,20 +75,20 @@
   Methods
 ]
 
-#slide(title: "Empirical Framework")[
-  #set text(size: 22pt)
-  Modeling a household's decision to stay or move in a neighborhood that evolves over time:
+// #slide(title: "Empirical Framework")[
+//   #set text(size: 22pt)
+//   Modeling a household's decision to stay or move in a neighborhood that evolves over time:
 
-  $ U_(i,j,t) = f(Z_(i,t), X_(j,t), xi_(j,t)) + sum_(k) g(Z_i, Z_(k,t), D_(i,k)) + epsilon_(i,j,t) $
+//   $ U_(i,j,t) = f(Z_(i,t), X_(j,t), xi_(j,t)) + sum_(k) g(Z_i, Z_(k,t), D_(i,k)) + epsilon_(i,j,t) $
 
-  Where:
-  - $f(·)$: Utility from neighborhood amenities
-  - $g(·)$: Utility from characteristics of each neighbor $k$ at distance $D_(i,k)$
-  - $Z_i$: Observable household attributes
-  - $X_j$: Observable neighborhood attributes
-  - $xi_j$: Unobservable neighborhood attributes
-  - $epsilon_(i,j,t)$: Idiosyncratic preferences
-]
+//   Where:
+//   - $f(·)$: Utility from neighborhood amenities
+//   - $g(·)$: Utility from characteristics of each neighbor $k$ at distance $D_(i,k)$
+//   - $Z_i$: Observable household attributes
+//   - $X_j$: Observable neighborhood attributes
+//   - $xi_j$: Unobservable neighborhood attributes
+//   - $epsilon_(i,j,t)$: Idiosyncratic preferences
+// ]
 
 #slide(title: "Identification Challenge")[
   #set text(size: 22pt)
@@ -96,29 +96,46 @@
     V_(i,j,t) = f(Z_(i,t), X_(j,t), xi_(j,t)) + sum_(k) g(Z_(i,t), Z_(k,t), D_(i,k)) + delta E[V_(i,j,t+1)] + epsilon_(i,j,t)
   $
 
-
   #strong[Key identification challenges:]
   - Unobserved neighborhood amenities
   - Dynamic preferences (expectations of future changes)
   - Selection effects (who moves where is not random)
 ]
 
-#slide(title: "Nearest-Neighbor Research Design")[
-  #set text(size: 18pt)
+
+#slide(title: "Nearest neighbor research design")[
+  #set text(size: 16pt)
   #strong[Innovative approach from @Bayer_2022_nearest_neighbor:]
 
-  Compare households within the same neighborhood who receive different-type neighbors:
+  Compare households within the same neighborhood who receive different-type neighbors. Why does this work? Consider two households:
+
+  - Household $a$: New different-type $e'$ neighbor among their nearest (rank 1-3) neighbors
+  - Household $b$: New different-type $e'$ neighbor slightly further away (rank 4-6)
+
+  Difference in moving propensity:
+
+  $
+    Y_a (e', k_(#text("nearest"))) - Y_b (e', k_(#text("near"))) &= (#sym.PP [e', k_(#text("nearest"))]) - #sym.PP [e', k_(#text("near"))])) \
+    &+ (xi_a B(e', k_(#text("nearest"))) - xi_b B(e', k_(#text("near")))) \
+    &+ (rho_a - rho_b) + (omega_j-omega_j) #sym.arrow.l.r \
+    &= #sym.PP [e', k_(#text("nearest"))]^* + rho_a - rho_b
+  $
+
+  + $#sym.PP [e', k_(#text("nearest"))]) - #sym.PP [e', k_(#text("near"))]) > 0$
+  + $xi_a B(e', k_(#text("nearest"))) - xi_b B(e', k_(#text("near"))) approx 0$: (almost) no difference in future neighborhood quality expectation
+  + $Y_a (e', k_(#text("nearest"))) - Y_b (e', k_(#text("near")))$ #sym.bot $rho_a-rho_b$: For existing households, location of new neighbors are not related to idiosyncratic factors $rho$.
+]
+
+#slide(title: "Nearest neighbor research design")[
+  #set text(size: 16pt)
   - #strong[Treatment group]: Households with new different-type neighbors among their 3 nearest neighbors
   - #strong[Control group]: Households with new different-type neighbors "just down the road" (ranks 4-6)
 
-  #v(1em)
-  #align(center)[
+    $
+      Y_(i,j,t) = beta_1 I[e', k = n_(#text("nearest"))] + beta_2 I[e', k = n_(#text("near"))] + beta_3 I[e', k = n_(#text("close"))] + gamma Z_(i,j,t) + omega_(j,t) + epsilon_(i,j,t)
+    $
+    #strong[Parameter of interest:] $ beta_1 - beta_2 $
 
-    $
-      Y_(i,j,t) = beta_1 I[e', k = n_(n e a r e s t)] + beta_2 I[e', k = n_(n e a r)] + beta_3 I[e', k = n_(c l o s e)] + gamma Z_(i,j,t) + omega_(j,t) + epsilon_(i,j,t)
-    $
-    #reddy[Parameter of interest:] $ beta_1 - beta_2 $
-  ]
   This design addresses key identification challenges by comparing households experiencing same neighborhood conditions but different micro-geography of new neighbors.
 ]
 
@@ -356,7 +373,7 @@
   #set text(size: 14pt)
   #align(center)[
     $
-      X_(i,j,t) = phi_1 I[e', k = n_(n e a r e s t)] + phi_2 I[e', k = n_(n e a r)] + phi_3 I[e', k = n_(c l o s e)] + omega_(j,t) + epsilon_(i,j,t)
+      X_(i,j,t) = phi_1 I[e', k = n_(#text("nearest"))] + phi_2 I[e', k = n_(#text("near"))] + phi_3 I[e', k = n_(#text("close"))] + omega_(j,t) + epsilon_(i,j,t)
     $
     #image("tab2_balance_test_native.png", width: 80%)
     #image("tab3_balance_test_nonWest.png", width: 80%)
